@@ -13,7 +13,7 @@ import "./Number.sol";
 
 contract NumberBasic is Number {
 
-  constructor(uint256 initNumber){
+  constructor(uint256 initNumber) public {
     _setNumber(initNumber);
   }
 

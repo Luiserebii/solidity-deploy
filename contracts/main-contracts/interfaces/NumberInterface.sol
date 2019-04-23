@@ -6,7 +6,5 @@ pragma solidity ^0.5.0;
  */
 
 interface NumberInterface {
-
-    function number() external pure returns (uint256);
-
+    function number() external view returns (uint256);
 }

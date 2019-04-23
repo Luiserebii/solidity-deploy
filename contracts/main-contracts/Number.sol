@@ -15,7 +15,7 @@ contract Number is NumberInterface {
 
   uint256 private _number;
 
-  function number() public pure returns (uint256) {
+  function number() public view returns (uint256) {
     return _number;
   }
  
