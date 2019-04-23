@@ -29,7 +29,7 @@ console.log(output)
 let ranArr = findSolInDir(contractsPath);
 console.log(ranArr);
 
-
+console.log(util.inspect(generateSolcInput(contractsPath)))
 /*for(var i = 0; i < ranArr.length; i++) {
   console.log(toSolcFilename(ranArr[i]));
 }*/
@@ -117,6 +117,7 @@ function generateSolcInput(root) {
     let code = fs.readFileSync(files[i]);
     let base = toSolcFilename(files[i]);
     input.sources[base] = { contents: code };
+    console.log("PROCESSED NAME: " + base);
   }
 
   //return input
