@@ -29,6 +29,12 @@ console.log(JSON.parse(output));
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 
+//const provider = new HDWalletProvider(
+//   MNEMONIC, 
+//   INFURA_KEY'
+//);
+//const web3 = new Web3(provider)
+
 //const compiled = compile()
 //const NumberContract = extractContract(compiled, contractName);
 //  this returned object contains name, interface, and bytecode
