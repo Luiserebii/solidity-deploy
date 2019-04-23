@@ -26,9 +26,23 @@ var input = {
 var output = JSON.parse(solc.compile(JSON.stringify(input)))
 console.log(output)
 
-//console.log(findFilesInDir(contractsPath, ".sol"))
-console.log(findSolInDir(contractsPath));
+let ranArr = findSolInDir(contractsPath);
+console.log(ranArr);
 
+
+for(var i = 0; i < ranArr.length; i++) {
+  console.log(toSolcFilename(ranArr[i]));
+}
+
+//This needs to be improved by using some sort of "node.js path equivalent"
+function toSolcFilename(filepath) {
+  let maindir = "contracts";
+  let index = filepath.indexOf(maindir);
+  if(index === -1) {
+    throw "Error - no main contract directory found within filepath";
+  }
+  return filepath.substring(index + maindir.length + 1);
+}
 
 function findSolInDir(root) {
   return findExtInDir(root, ".sol");
@@ -63,7 +77,7 @@ function findFilesInDir(root, condition){
     if(stat.isDirectory()){
       results = results.concat(findFilesInDir(filename, condition)); //recurse
     } else if(condition(filename)) {
-      console.log('-- found: ', filename);
+//      console.log('-- found: ', filename);
       results.push(filename);
     }
   }
