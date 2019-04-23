@@ -30,9 +30,26 @@ let ranArr = findSolInDir(contractsPath);
 console.log(ranArr);
 
 
-for(var i = 0; i < ranArr.length; i++) {
+/*for(var i = 0; i < ranArr.length; i++) {
   console.log(toSolcFilename(ranArr[i]));
-}
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //This needs to be improved by using some sort of "node.js path equivalent"
 function toSolcFilename(filepath) {
@@ -85,27 +102,26 @@ function findFilesInDir(root, condition){
 }
 
 //Generate input object, assuming Solidity as language, from filepath of sources
-//function generateSolcInput(contractsPath) {
-// let input = { language: 'Solidity', sources: {} };
+function generateSolcInput(root) {
+  let input = { language: 'Solidity', sources: {} };
+ 
   //parse through all the paths
+  let files = findSolInDir(root);
+
   //For each .sol file found,
   //  (Grab contents of contract)
   //  (Grab base filename, which should end in .sol)
-  //  Find contract name (assume we only have 1 potential contract name to parse)
-  
+  //  Find contract name (assume we only have 1 potential contract name to parse) 
   //Finally, define input.sources.[name of contract] = {contents: [contentsofcontract]}
+  for(var i = 0; i < files.length; i++) {
+    let code = fs.readFileSync(files[i]);
+    let base = toSolcFilename(files[i]);
+    input.sources[base] = { contents: code };
+  }
+
   //return input
-  //for()
+  return input;  
 
-//}
-
-//function parseContractName(/*string*/ content) {
-  //for each line...
-  //Look for "contract " as reserved keyword OR "interface "
-  //Read everything from there up to the next whitespace
-
-//}
-
-
+}
 
 
