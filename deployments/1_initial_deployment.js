@@ -23,17 +23,18 @@ var input = {
   }
 }
 
+console.log(input)
 var output = JSON.parse(solc.compile(JSON.stringify(input)))
 console.log(output)
 
 let ranArr = findSolInDir(contractsPath);
 console.log(ranArr);
 
-console.log(util.inspect(generateSolcInput(contractsPath)))
-/*for(var i = 0; i < ranArr.length; i++) {
-  console.log(toSolcFilename(ranArr[i]));
-}*/
 
+let generatedInput = generateSolcInput(contractsPath);
+console.log(util.inspect(generatedInput))
+
+console.log(JSON.parse(solc.compile(JSON.stringify(generatedInput))))
 
 
 
@@ -114,9 +115,9 @@ function generateSolcInput(root) {
   //  Find contract name (assume we only have 1 potential contract name to parse) 
   //Finally, define input.sources.[name of contract] = {contents: [contentsofcontract]}
   for(var i = 0; i < files.length; i++) {
-    let code = fs.readFileSync(files[i]);
+    let src = fs.readFileSync(files[i], 'utf8');
     let base = toSolcFilename(files[i]);
-    input.sources[base] = { contents: code };
+    input.sources[base] = { content: src };
     console.log("PROCESSED NAME: " + base);
   }
 
