@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
+const util = require('util')
 
 const contractsPath = path.resolve(__dirname, '../contracts', 'main-contracts');
 
@@ -25,8 +26,8 @@ var input = {
 var output = JSON.parse(solc.compile(JSON.stringify(input)))
 console.log(output)
 
-console.log(findFilesInDir(contractsPath, ".sol"))
-
+//console.log(findFilesInDir(contractsPath, ".sol"))
+console.log(findSolInDir(contractsPath));
 
 
 function findSolInDir(root) {
@@ -55,9 +56,8 @@ function findFilesInDir(root, condition){
 
   var files = fs.readdirSync(root);
 
-  for(f in files){
-
-    var filename = path.join(root, f);
+  for(var i = 0; i < files.length; i++){
+    var filename = path.join(root, files[i]);
     var stat = fs.lstatSync(filename);
 
     if(stat.isDirectory()){
