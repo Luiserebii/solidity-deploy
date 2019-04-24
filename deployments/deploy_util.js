@@ -8,12 +8,15 @@ class DeployUtil {
     //Find all raw contract output
     let raw;
     let isFound = false;
+    //Let's just hang onto the reference of the filename as well...
+    let sol;
     for(let solFile in output.contracts) {
       console.log("Looking over " + solFile + "...");
       for(let c in output.contracts[solFile]) {
         console.log("    " + c);
         if(c === name) { 
           raw = output.contracts[solFile][c];
+          sol = solFile;
           isFound = true;
           console.log("Found contract!!!");
         }
@@ -26,7 +29,8 @@ class DeployUtil {
       "name": name,
       "abi": raw.abi,
       "bytecode": raw.evm.bytecode.object,
-      "raw": raw
+      "raw": raw,
+      "solFile": sol
     }
 
     return contract;

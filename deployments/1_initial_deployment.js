@@ -65,15 +65,13 @@ async function deployContract(contract, args, sendOptions){
         console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
         if(num === 2) {
           console.log("resolving...");
-          break;
           //resolve();
         }
       })
       .on('error', (err) => { console.log(err); });
-     
+
   console.log("END OF AWAIT IN FUNCTION") 
   return contractWeb3;
-  
 }
 
 //Deployment logic:
@@ -136,3 +134,51 @@ Print: as many '=' chars as above line
 //   internal var raw
 // get interface()
 // get bytecode()
+
+
+//////////////////////////////////////////////////////////////////////
+
+//Verifying contracts:
+
+const axios = require('axios'); 
+
+async function verifyContract(contract, address, filepath) {
+
+  let data = {
+    apikey: config.etherscan.apiKey,
+    module: 'contract',
+    action: 'verifysourcecode', 
+    contractaddress: address,
+    sourceCode: fs.readFileSync(filepath, 'utf8'),
+    contract: contract.name,
+    compilerversion: 'v0.5.7+commit.6da8b019',
+    optimizationUsed: 1,
+    runs: 200    
+  }
+
+  let res = await axios.post(config.etherscan.url, data);
+  if(res.data.status === "1") {
+    console.log("Request submitted! Message: " + res.data.message + "\nguid: " + res.data.result)
+  } else {
+    throw "Request submission failed! Reason: " + res.data.message;
+  }
+
+  let poll = setInterval(() => {  
+    console.log("Attempting to poll Etherscan for status...")
+    let pollRes = await axios.get(config.etherscan.url, {
+      guid: res.data.result,
+      module: "contract",
+      action: "checkverifystatus"
+    });
+
+    if(pollRes.data.status === "1") {
+      console.log("Contract successfully verified! Status received: " + pollRes.data.status)
+      clearInterval(poll);
+    } else {
+      console.log("Not verified yet... attempting again in 5 seconds")
+    }
+  }, 5*1000); //poll api every 5 seconds
+
+  
+
+}
