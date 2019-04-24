@@ -14,34 +14,41 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const config = require('../deploy-config');
 
+console.log(config)
+
 const provider = new HDWalletProvider(
    config.mnemonic, 
    `https://rinkeby.infura.io/v3/${config.infuraKey}`
-   //0,
-   //10
+   ,
+   0,
+   10
 );
 
 const web3 = new Web3(provider);
-const accounts = await web3.eth.getAccounts();
 const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
 
+testDeploy();
 
-const CalculatorContractInput = DeployUtil.extractContract(compiled, "Calculator");
-console.log(CalculatorContractInput);
-//  this returned object contains name, raw, abi, and bytecode
+async function testDeploy(){
+  const accounts = await web3.eth.getAccounts();
+  console.log("ACCOUNTS:   " + accounts);
+  const CalculatorContractInput = DeployUtil.extractContract(compiled, "Calculator");
+  console.log(CalculatorContractInput);
+  //  this returned object contains name, raw, abi, and bytecode
 
-/*console.log(pp.mainheadline("Hello! Main Headline"))
-console.log(pp.miniheadline("hi, I'm a miniheadline"))
-console.log(pp.arrow("list item 1"))
-*/
+  /*console.log(pp.mainheadline("Hello! Main Headline"))
+  console.log(pp.miniheadline("hi, I'm a miniheadline"))
+  console.log(pp.arrow("list item 1"))
+  */
 
-let CalculatorContract = await deployContract(CalculatorContractInput, [], { from: accounts[0] });
-
+  let CalculatorContract = await deployContract(CalculatorContractInput, [], { from: accounts[0] });
+  console.log("end of deploy");
+}
 
 async function deployContract(contract, args, sendOptions){
   
   console.log(pp.miniheadline("Deploying " + contract.name));
-  let contract = await new web3.eth.Contract(contract.abi)
+  let contractWeb3 = await new web3.eth.Contract(contract.abi)
       .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
       .send(sendOptions)
       .on('receipt', (receipt) => {
@@ -55,14 +62,17 @@ async function deployContract(contract, args, sendOptions){
         
       })
       .on('confirmation', (num, receipt) => {
-        if(num === 2) {
-          resolve();
-        }
         console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
+        if(num === 2) {
+          console.log("resolving...");
+          break;
+          //resolve();
+        }
       })
       .on('error', (err) => { console.log(err); });
-      
-  return contract;
+     
+  console.log("END OF AWAIT IN FUNCTION") 
+  return contractWeb3;
   
 }
 
