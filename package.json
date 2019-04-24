@@ -22,7 +22,8 @@
   "dependencies": {
     "dotenv": "7.0.0",
     "solc": "^0.5.7",
-    "truffle-hdwallet-provider": "1.0.7"
+    "truffle-hdwallet-provider": "1.0.7",
+    "web3": "1.0.0-beta.36"
   },
   "devDependencies": {
     "chai": "^4.2.0",

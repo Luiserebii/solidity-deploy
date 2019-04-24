@@ -6,6 +6,8 @@ const compile = require('./compile');
 const defaultConfig = require('./default_config')
 const deployutil = require('./deploy_util')
 const DeployUtil = new deployutil();
+const PrettyPrint = require('./pretty-print');
+const pp = new PrettyPrint();
 
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
@@ -14,7 +16,10 @@ const config = require('../deploy-config');
 
 const provider = new HDWalletProvider(
    config.mnemonic, 
-   config.infuraKey
+   `https://rinkeby.infura.io/v3/${config.infuraKey}`
+   //"https://rinkeby.infura.io/v3/" + config.infuraKey,
+   //0,
+   //10
 );
 
 const web3 = new Web3(provider);
@@ -25,14 +30,18 @@ const NumberContract = DeployUtil.extractContract(compiled, "NumberInterface");
 console.log(NumberContract);
 //  this returned object contains name, raw, abi, and bytecode
 
-
-
+console.log(pp.mainheadline("Hello! Main Headline"))
+console.log(pp.miniheadline("hi, I'm a miniheadline"))
+console.log(pp.arrow("list item 1"))
 
 function deployContract(contract, args, sendOptions){
   
-  let contract = await new web3.eth.Contract(contract.abi)
+  console.log(pp.miniheadline("Deploying " + contract.name));
+  let contract = new web3.eth.Contract(contract.abi)
       .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
       .send(sendOptions);
+  
+
   return contract;
   
 }
