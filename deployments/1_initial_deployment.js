@@ -1,41 +1,24 @@
-const path = require('path');
-const fs = require('fs');
-const solc = require('solc');
-const util = require('util')
-
-const solcutil = require('./solc_util');
-const SolcUtil = new solcutil();
-
-const contracts = path.resolve(__dirname, '../contracts', 'main-contracts');
-console.log("ROOT: " + contracts);
-
-console.log("GENERATING INPUT...");
-let generatedInput = SolcUtil.generateSolcInput(contracts);
-console.log(util.inspect(generatedInput))
-
-console.log("COMPILING...");
-let output = solc.compile(JSON.stringify(generatedInput));
-
-console.log("OUTPUT: ");
-console.log(JSON.parse(output));
-
-//const contracts = path.resolve(__dirname, '../contracts', 'main-contracts');
-//let output = solc.compile(JSON.stringify(SolcUtil.generateSolcInput(contracts)))
-
-//////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
 //DEPLOYMENT:
 
+const compile = require('./compile');
+const defaultConfig = require('./default_config')
+
+const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
+const config = require('../deploy-config');
 
-//const provider = new HDWalletProvider(
-//   MNEMONIC, 
-//   INFURA_KEY'
-//);
-//const web3 = new Web3(provider)
+const provider = new HDWalletProvider(
+   config.mnemonic, 
+   config.infuraKey
+);
 
-//const compiled = compile()
+const web3 = new Web3(provider);
+
+const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
+
 //const NumberContract = extractContract(compiled, contractName);
 //  this returned object contains name, interface, and bytecode
 
