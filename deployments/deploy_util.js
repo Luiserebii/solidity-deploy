@@ -8,13 +8,12 @@ class DeployUtil {
     //Find all raw contract output
     let raw;
     let isFound = false;
-    console.log(typeof output);
     for(let solFile in output.contracts) {
       console.log("Looking over " + solFile + "...");
       for(let c in output.contracts[solFile]) {
         console.log("    " + c);
         if(c === name) { 
-          raw = output.contracts.c;
+          raw = output.contracts[solFile][c];
           isFound = true;
           console.log("Found contract!!!");
         }
