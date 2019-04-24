@@ -5,13 +5,12 @@ const solc = require('solc');
 class SolcUtil {
 
   //This needs to be improved by using some sort of "node.js path equivalent"
-  toSolcFilename(filepath) {
-    let maindir = "contracts";
-    let index = filepath.indexOf(maindir);
+  toSolcFilename(filepath, root) {
+    let index = filepath.indexOf(root);
     if(index === -1) {
       throw "Error - no main contract directory found within filepath";
     }
-    return filepath.substring(index + maindir.length + 1);
+    return filepath.substring(index + root.length + 1);
   }
 
   findSolInDir(root) {
@@ -68,7 +67,7 @@ class SolcUtil {
     //  Find contract name (assume we only have 1 potential contract name to parse) 
     //Finally, define input.sources.[name of contract] = {contents: [contentsofcontract]}
     for(var i = 0; i < files.length; i++) {
-      let base = this.toSolcFilename(files[i]);
+      let base = this.toSolcFilename(files[i], root);
       //Skipping over the Migrations.sol by Truffle... (TODO: Should we do this?)
       if(base !== "Migrations.sol") {
         let src = fs.readFileSync(files[i], 'utf8');
