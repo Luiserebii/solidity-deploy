@@ -9,9 +9,9 @@ class DeployUtil {
     let raw;
     let isFound = false;
     console.log(typeof output);
-    for(solFile in output.contracts) {
+    for(let solFile in output.contracts) {
       console.log("Looking over " + solFile + "...");
-      for(c in solFile) {
+      for(let c in output.contracts[solFile]) {
         console.log("    " + c);
         if(c === name) { 
           raw = output.contracts.c;
