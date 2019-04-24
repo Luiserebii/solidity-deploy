@@ -6,7 +6,7 @@ const util = require('util')
 const solcutil = require('./solc_util');
 const SolcUtil = new solcutil();
 
-function compile(root = path.resolve(__dirname, '../contracts'), verbose = true) {
+function compile(root = path.resolve(__dirname, '../contracts'), verbose = false) {
 
   /*if(verbose) {*/ console.log("Config: "); //}
   /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}

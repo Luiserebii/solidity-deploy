@@ -4,6 +4,7 @@
 
 const compile = require('./compile');
 const defaultConfig = require('./default_config')
+const DeployUtil = require('./deploy_util')
 
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
@@ -16,10 +17,11 @@ const provider = new HDWalletProvider(
 );
 
 const web3 = new Web3(provider);
-
 const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
 
-//const NumberContract = extractContract(compiled, contractName);
+
+const NumberContract = DeployUtil.extractContract(compiled, "NumberInterface");
+console.log(NumberContract);
 //  this returned object contains name, interface, and bytecode
 
 
