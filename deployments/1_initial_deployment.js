@@ -8,7 +8,9 @@ const deployutil = require('./deploy_util')
 const DeployUtil = new deployutil();
 const PrettyPrint = require('./pretty-print');
 const pp = new PrettyPrint();
+const util = require('util');
 
+const fs = require('fs');
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
@@ -27,7 +29,7 @@ const provider = new HDWalletProvider(
 const web3 = new Web3(provider);
 const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
 
-testDeploy();
+//testDeploy();
 
 async function testDeploy(){
   const accounts = await web3.eth.getAccounts();
@@ -142,6 +144,16 @@ Print: as many '=' chars as above line
 
 const axios = require('axios'); 
 
+let contractObj = DeployUtil.extractContract(compiled, "Calculator");
+let addr = "0x5E0318D57c2F0d1262df93478A92EeDAd246A374";
+let solFile = path.resolve(config.root, contractObj.solFile);
+
+console.log("Verifying contract: " + util.inspect(contractObj));
+console.log("Address: " + addr);
+console.log(".sol file location: " + solFile);
+
+verifyContract(contractObj, addr, solFile);
+
 async function verifyContract(contract, address, filepath) {
 
   let data = {
@@ -163,7 +175,7 @@ async function verifyContract(contract, address, filepath) {
     throw "Request submission failed! Reason: " + res.data.message;
   }
 
-  let poll = setInterval(() => {  
+  let poll = setInterval(async () => {  
     console.log("Attempting to poll Etherscan for status...")
     let pollRes = await axios.get(config.etherscan.url, {
       guid: res.data.result,
