@@ -17,7 +17,6 @@ const config = require('../deploy-config');
 const provider = new HDWalletProvider(
    config.mnemonic, 
    `https://rinkeby.infura.io/v3/${config.infuraKey}`
-   //"https://rinkeby.infura.io/v3/" + config.infuraKey,
    //0,
    //10
 );
@@ -34,13 +33,27 @@ console.log(pp.mainheadline("Hello! Main Headline"))
 console.log(pp.miniheadline("hi, I'm a miniheadline"))
 console.log(pp.arrow("list item 1"))
 
-function deployContract(contract, args, sendOptions){
+async function deployContract(contract, args, sendOptions){
   
   console.log(pp.miniheadline("Deploying " + contract.name));
-  let contract = new web3.eth.Contract(contract.abi)
+  let contract = await new web3.eth.Contract(contract.abi)
       .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
-      .send(sendOptions);
-  
+      .send(sendOptions)
+      .on('receipt', (receipt) => {
+        console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
+        console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
+        console.log(pp.arrow("contract address: " + receipt.contractAddress));
+        console.log(pp.arrow("from: " + receipt.from));
+        console.log(pp.arrow("block number: " + receipt.blockNumber));
+        console.log(pp.arrow("gas used: " + receipt.gasUsed));
+        console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+        
+      })
+      .on('confirmation', (num, receipt) => {
+        console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
+      })
+      .on('error', (err) => { console.log(err); });
+      
 
   return contract;
   
