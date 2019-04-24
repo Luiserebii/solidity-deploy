@@ -1,3 +1,10 @@
+
+//Print functions (returns a string, which is then printed):
+//
+// for "> "
+// for headlines (adding ==== below as well)
+// for mini-headlines (adding ---- below as well)
+
 class PrettyPrint {
   
   arrow(str) {

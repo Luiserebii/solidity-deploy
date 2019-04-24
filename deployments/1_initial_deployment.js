@@ -22,16 +22,21 @@ const provider = new HDWalletProvider(
 );
 
 const web3 = new Web3(provider);
+const accounts = await web3.eth.getAccounts();
 const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
 
 
-const NumberContract = DeployUtil.extractContract(compiled, "NumberInterface");
-console.log(NumberContract);
+const CalculatorContractInput = DeployUtil.extractContract(compiled, "Calculator");
+console.log(CalculatorContractInput);
 //  this returned object contains name, raw, abi, and bytecode
 
-console.log(pp.mainheadline("Hello! Main Headline"))
+/*console.log(pp.mainheadline("Hello! Main Headline"))
 console.log(pp.miniheadline("hi, I'm a miniheadline"))
 console.log(pp.arrow("list item 1"))
+*/
+
+let CalculatorContract = await deployContract(CalculatorContractInput, [], { from: accounts[0] });
+
 
 async function deployContract(contract, args, sendOptions){
   
@@ -50,11 +55,13 @@ async function deployContract(contract, args, sendOptions){
         
       })
       .on('confirmation', (num, receipt) => {
+        if(num === 2) {
+          resolve();
+        }
         console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
       })
       .on('error', (err) => { console.log(err); });
       
-
   return contract;
   
 }
