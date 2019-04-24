@@ -23,8 +23,19 @@ const compiled = config.root ? compile(config.root) : compile(defaultConfig.root
 
 const NumberContract = DeployUtil.extractContract(compiled, "NumberInterface");
 console.log(NumberContract);
-//  this returned object contains name, interface, and bytecode
+//  this returned object contains name, raw, abi, and bytecode
 
+
+
+
+function deployContract(contract, args, sendOptions){
+  
+  let contract = await new web3.eth.Contract(contract.abi)
+      .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
+      .send(sendOptions);
+  return contract;
+  
+}
 
 //Deployment logic:
 
