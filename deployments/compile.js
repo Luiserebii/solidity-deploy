@@ -18,10 +18,7 @@ function compile(root = path.resolve(__dirname, '../contracts'), verbose = true)
   if(verbose) { console.log("\n") }
 
   console.log("Compiling...\n");
-  console.log("TYPE INPUT:  " + typeof generatedInput);
-
-  const output = JSON.parse(solc.compile(generatedInput));
-  console.log("TYPE OUTPUT:  " + typeof output)
+  const output = JSON.parse(solc.compile(JSON.stringify(generatedInput)));
   
  
   if(verbose) { console.log("OUTPUT: "); console.log(util.inspect(output, { depth: null })); }
