@@ -8,11 +8,15 @@ class DeployUtil {
     //Find all raw contract output
     let raw;
     let isFound = false;
+    console.log(typeof output);
     for(solFile in output.contracts) {
+      console.log("Looking over " + solFile + "...");
       for(c in solFile) {
+        console.log("    " + c);
         if(c === name) { 
           raw = output.contracts.c;
           isFound = true;
+          console.log("Found contract!!!");
         }
       }
     }

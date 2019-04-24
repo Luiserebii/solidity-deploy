@@ -6,7 +6,7 @@ const util = require('util')
 const solcutil = require('./solc_util');
 const SolcUtil = new solcutil();
 
-function compile(root = path.resolve(__dirname, '../contracts'), verbose = false) {
+function compile(root = path.resolve(__dirname, '../contracts'), verbose = true) {
 
   /*if(verbose) {*/ console.log("Config: "); //}
   /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}
@@ -18,8 +18,13 @@ function compile(root = path.resolve(__dirname, '../contracts'), verbose = false
   if(verbose) { console.log("\n") }
 
   console.log("Compiling...\n");
-  const output = solc.compile(JSON.stringify(generatedInput));
-  if(verbose) { console.log("OUTPUT: "); console.log(util.inspect(JSON.parse(output), { depth: null })); }
+  console.log("TYPE INPUT:  " + typeof generatedInput);
+
+  const output = JSON.parse(solc.compile(generatedInput));
+  console.log("TYPE OUTPUT:  " + typeof output)
+  
+ 
+  if(verbose) { console.log("OUTPUT: "); console.log(util.inspect(output, { depth: null })); }
 
   return output;
 

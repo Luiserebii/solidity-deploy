@@ -4,7 +4,8 @@
 
 const compile = require('./compile');
 const defaultConfig = require('./default_config')
-const DeployUtil = require('./deploy_util')
+const deployutil = require('./deploy_util')
+const DeployUtil = new deployutil();
 
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
