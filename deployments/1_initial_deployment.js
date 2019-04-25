@@ -29,7 +29,7 @@ const provider = new HDWalletProvider(
 const web3 = new Web3(provider);
 const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
 
-//testDeploy();
+testDeploy();
 
 async function testDeploy(){
   const accounts = await web3.eth.getAccounts();
@@ -50,9 +50,9 @@ async function testDeploy(){
 async function deployContract(contract, args, sendOptions){
   
   console.log(pp.miniheadline("Deploying " + contract.name));
-  let contractWeb3 = await new web3.eth.Contract(contract.abi)
-      .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
-      .send(sendOptions)
+  let contractWeb3 = await (await (await (await (await new web3.eth.Contract(contract.abi))
+      .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args }))
+      .send(sendOptions))
       .on('receipt', (receipt) => {
         console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
         console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
@@ -62,7 +62,7 @@ async function deployContract(contract, args, sendOptions){
         console.log(pp.arrow("gas used: " + receipt.gasUsed));
         console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
         
-      })
+      }))
       .on('confirmation', (num, receipt) => {
         console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
         if(num === 2) {
@@ -152,7 +152,7 @@ console.log("Verifying contract: " + util.inspect(contractObj));
 console.log("Address: " + addr);
 console.log(".sol file location: " + solFile);
 
-verifyContract(contractObj, addr, solFile);
+//verifyContract(contractObj, addr, solFile);
 
 async function verifyContract(contract, address, filepath) {
 
@@ -162,17 +162,19 @@ async function verifyContract(contract, address, filepath) {
     action: 'verifysourcecode', 
     contractaddress: address,
     sourceCode: fs.readFileSync(filepath, 'utf8'),
-    contract: contract.name,
+    contractname: contract.name,
     compilerversion: 'v0.5.7+commit.6da8b019',
     optimizationUsed: 1,
     runs: 200    
   }
 
+  console.log(util.inspect(data))
+
   let res = await axios.post(config.etherscan.url, data);
   if(res.data.status === "1") {
     console.log("Request submitted! Message: " + res.data.message + "\nguid: " + res.data.result)
   } else {
-    throw "Request submission failed! Reason: " + res.data.message;
+    throw "Request submission failed! Reason: " + util.inspect(res.data);
   }
 
   let poll = setInterval(async () => {  
