@@ -48,7 +48,7 @@ async function testDeploy(){
 }
 
 async function deployContract(contract, args, sendOptions){
-  
+/*  
   console.log(pp.miniheadline("Deploying " + contract.name));
   let contractWeb3 = await (await (await (await (await new web3.eth.Contract(contract.abi))
       .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args }))
@@ -69,8 +69,82 @@ async function deployContract(contract, args, sendOptions){
           console.log("resolving...");
           //resolve();
         }
+      });
+      //.on('error', (err) => { console.log(err); });
+*/
+/*
+  console.log(pp.miniheadline("Deploying " + contract.name));
+  let contractWeb3 = await new web3.eth.Contract(contract.abi);
+  //contractWeb3.on('error', (err) => { console.log(err); });
+  let deployRes = await contractWeb3.deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args });
+  let sendRes = await deployRes.send(sendOptions);
+  console.log(util.inspect(sendRes));
+  let receiptRes = await sendRes.on('receipt', (receipt) => {
+        console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
+        console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
+        console.log(pp.arrow("contract address: " + receipt.contractAddress));
+        console.log(pp.arrow("from: " + receipt.from));
+        console.log(pp.arrow("block number: " + receipt.blockNumber));
+        console.log(pp.arrow("gas used: " + receipt.gasUsed));
+        console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+        
+      });
+  let confirmationRes = await receiptRes.on('confirmation', (num, receipt) => {
+        console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
+        if(num === 2) {
+          console.log("resolving...");
+          //resolve();
+        }
+      });
+  */
+/*  console.log(pp.miniheadline("Deploying " + contract.name));
+  let contractWeb3 = await (new web3.eth.Contract(contract.abi)
+      .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
+      .send(sendOptions)
+      .on('receipt', (receipt) => {
+        console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
+        console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
+        console.log(pp.arrow("contract address: " + receipt.contractAddress));
+        console.log(pp.arrow("from: " + receipt.from));
+        console.log(pp.arrow("block number: " + receipt.blockNumber));
+        console.log(pp.arrow("gas used: " + receipt.gasUsed));
+        console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+        
       })
-      .on('error', (err) => { console.log(err); });
+      .on('confirmation', (num, receipt) => {
+        console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
+        if(num === 2) {
+          console.log("resolving...");
+          //resolve();
+        }
+      })
+      .on('error', (err) => { console.log(err); }));*/
+ console.log(pp.miniheadline("Deploying " + contract.name));
+  let contractWeb3 = await new web3.eth.Contract(contract.abi);
+  //contractWeb3.on('error', (err) => { console.log(err); });
+  let deployRes = await contractWeb3.deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args });
+  let sendRes = await deployRes.send(sendOptions);
+  console.log(util.inspect(sendRes));
+  let receipt = await new Promise(function(resolve, reject){
+      sendRes.on('receipt', (receipt) => {
+          resolve(receipt);
+      });
+  });
+  console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
+  console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
+  console.log(pp.arrow("contract address: " + receipt.contractAddress));
+  console.log(pp.arrow("from: " + receipt.from));
+  console.log(pp.arrow("block number: " + receipt.blockNumber));
+  console.log(pp.arrow("gas used: " + receipt.gasUsed));
+  console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+  let rArray = await new Promise(function(resolve, reject){
+      sendRes.on("confirmation", function(num, receipt2){
+          resolve([num, receipt2]);
+      });
+  });
+  var num = rArray[0];
+  var receipt2 = rArray[1];
+  console.log("confirmation number: " + num + " (block: " + receipt2.blockNumber + ")");
 
   console.log("END OF AWAIT IN FUNCTION") 
   return contractWeb3;
