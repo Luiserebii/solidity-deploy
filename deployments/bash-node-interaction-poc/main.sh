@@ -15,9 +15,9 @@ headline () {
 }
 
 split() {
-  echo "ARGGG $1" 
+  echo "Delimiter passed: $1" 
   IFSSAVE=IFS
-  IFS=$1
+  IFS="$1"
   output=($output)
   # Reset IFS
   IFS=$IFSSAVE
@@ -40,11 +40,12 @@ b=1
 # Read output, loop for C value
 output=$(node $main -a 1 -b 2)
 # Call split with \n, which will take output and cut it for us
-split '\n'
+split $'\n'
 
-echo "ZXFREWQ  ${#output[@]}"
+echo "PRINTING LENGTH OUTPUT ARR:"
+echo "${#output[@]}"
+echo "---------------------------"
 
-#echo "meme";
 for i in "${output[@]}"; do # access each element of array
   echo "$i"
   echo "---"
