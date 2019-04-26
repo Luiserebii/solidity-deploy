@@ -26,6 +26,7 @@ const provider = new HDWalletProvider(
    10
 );
 const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
+let accounts;
 
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
@@ -37,39 +38,44 @@ const args = minimist(process.argv.slice(2));
 
 let compiled;
 
+
+const Stage = {
+  CALCULATOR: 1
+}
+
 //===========|MAIN|============//
 run();
 //=============================//
 
 
 async function run() {
+  accounts = await web3.eth.getAccounts();
   compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
   const stage = args['stage'];
 
   switch(stage) {
-    case 1: 
+    case Stage.CALCULATOR: 
+      await deploy("Calculator");
 
       break;
-    case 2:
+   /* case Stage.:
 
       break;
-    case 3:
+    case Stage.:
   
       break;
-
+*/
   }
 
 }
 
 async function deploy(name, args = [], sender = { from: accounts[0] }){
-
-  const accounts = await web3.eth.getAccounts();
-  console.log("ACCOUNTS:   " + accounts + "\n");
-
+  console.log("Accounts:   " + accounts + "\n");
   const contractInput = DeployUtil.extractContract(compiled, "Calculator");
-  console.log(CalculatorContractInput);
+  console.log(contractInput);
 
-  let CalculatorContract = await deployContract(contractInput, args, sender);
+  let Contract = await deployContract(contractInput, args, sender);
+  return Contract;
 }
 
 async function deployContract(contract, args, sendOptions){
