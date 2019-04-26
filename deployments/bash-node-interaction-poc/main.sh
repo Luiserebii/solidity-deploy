@@ -38,7 +38,7 @@ b=1
 
 
 # Read output, loop for C value
-output=$(node $main -a 1 -b 2)
+output=$(node $main -a $a -b $b)
 # Call split with \n, which will take output and cut it for us
 split $'\n'
 
@@ -56,9 +56,8 @@ output=$line
 split ":"
 
 #Finally, trim...
-output=${output[1]} | xargs
-
-c=$(($output + $b))
+c=${output[1]}
+c=c | xargs
 
 # Print in BASH as well
 headline $a $b $c
