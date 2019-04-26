@@ -15,10 +15,10 @@ headline () {
 }
 
 split() {
-  
+  echo "ARGGG $1" 
   IFSSAVE=IFS
   IFS=$1
-  read -ra output <<< "$output";
+  output=($output)
   # Reset IFS
   IFS=$IFSSAVE
 }
@@ -39,20 +39,18 @@ b=1
 
 # Read output, loop for C value
 output=$(node $main -a 1 -b 2)
-echo "AAAA $output"
 # Call split with \n, which will take output and cut it for us
-split "\n"
+split '\n'
 
 echo "ZXFREWQ  ${#output[@]}"
 
 #echo "meme";
 for i in "${output[@]}"; do # access each element of array
-  zoot="$i"
-  echo "HEY $zoot"
-  if [[ "$zoot" == *"C:"* ]]; then
-    echo "balls"
+  echo "$i"
+  echo "---"
+  if [[ $i == *"C:"* ]]; then
+    echo "We found \"C:\"!"
     echo "$i"
-    echo "eee"
   fi
 done
 
