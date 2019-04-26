@@ -26,26 +26,50 @@ const provider = new HDWalletProvider(
    10
 );
 const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
+
+const minimist = require('minimist');
+const args = minimist(process.argv.slice(2));
  
+//Sample 
+/*
+ * main-deploy.js -- 
+ */
 
 let compiled;
 
+//===========|MAIN|============//
 run();
+//=============================//
+
 
 async function run() {
   compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
-  await testDeploy();
+  const stage = args['stage'];
+
+  switch(stage) {
+    case 1: 
+
+      break;
+    case 2:
+
+      break;
+    case 3:
+  
+      break;
+
+  }
+
 }
 
-async function testDeploy(){
+async function deploy(name, args = [], sender = { from: accounts[0] }){
+
   const accounts = await web3.eth.getAccounts();
   console.log("ACCOUNTS:   " + accounts + "\n");
-  const CalculatorContractInput = DeployUtil.extractContract(compiled, "Calculator");
-  console.log(CalculatorContractInput);
-  //  this returned object contains name, raw, abi, and bytecode
 
-  let CalculatorContract = await deployContract(CalculatorContractInput, [], { from: accounts[0] });
- // console.log("end of deploy");
+  const contractInput = DeployUtil.extractContract(compiled, "Calculator");
+  console.log(CalculatorContractInput);
+
+  let CalculatorContract = await deployContract(contractInput, args, sender);
 }
 
 async function deployContract(contract, args, sendOptions){
