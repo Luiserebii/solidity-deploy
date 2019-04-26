@@ -8,20 +8,25 @@ headline () {
   # ANSI Escape Code styling
   border="\e[1;96m=========================="
   echo -e $border
-  echo -e "Stage $1 - COMPLETE"
+  echo -e "Addition: $1 + $2 = $3"
   echo -e $border
   # Reset coloring
   echo -e "\e[0m"
 }
 
-main="./main-deploy.js"
+main="./main-script.js"
 
-node $main --stage 1
+a=1
+b=2
+
+node $main --stage
+
+
 
 # PID=$!
 # sudo kill -INT $PID
 
-headline 1
+headline a b
 
 
 
