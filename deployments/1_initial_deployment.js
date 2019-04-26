@@ -33,15 +33,13 @@ let compiled;
 run();
 
 async function run() {
-  compiled = config.root ? await compile(config.root) : await compile(defaultConfig.root);
-  console.log("FFFF===============================================================")
-//  await testDeploy();
-  console.log("GGGG========================================================================")
+  compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
+  await testDeploy();
 }
 
 async function testDeploy(){
   const accounts = await web3.eth.getAccounts();
-  console.log("ACCOUNTS:   " + accounts);
+  console.log("ACCOUNTS:   " + accounts + "\n");
   const CalculatorContractInput = DeployUtil.extractContract(compiled, "Calculator");
   console.log(CalculatorContractInput);
   //  this returned object contains name, raw, abi, and bytecode
