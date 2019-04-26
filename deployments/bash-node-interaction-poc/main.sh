@@ -42,21 +42,26 @@ output=$(node $main -a 1 -b 2)
 # Call split with \n, which will take output and cut it for us
 split $'\n'
 
-echo "PRINTING LENGTH OUTPUT ARR:"
-echo "${#output[@]}"
-echo "---------------------------"
-
 for i in "${output[@]}"; do # access each element of array
-  echo "$i"
-  echo "---"
   if [[ $i == *"C:"* ]]; then
     echo "We found \"C:\"!"
     echo "$i"
+    line=$i
   fi
 done
 
+
+#Take our selected line, split it again, and grab the second half...
+output=$line
+split ":"
+
+#Finally, trim...
+output=${output[1]} | xargs
+
+c=$(($output + $b))
+
 # Print in BASH as well
-headline $a $b
+headline $a $b $c
 
 # Take B and C, and funnel it back into node
 
