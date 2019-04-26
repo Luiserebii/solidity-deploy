@@ -3,7 +3,7 @@ class DeployUtil {
 
   //Function which takes solc compiled output, a contract name to extract, and returns a convenience object
   //  this returned object contains name, abi, bytecode, and the raw solc output
-  extractContract(output, name){
+/*  extractContract(output, name){
 
     //Find all raw contract output
     let raw;
@@ -36,7 +36,7 @@ class DeployUtil {
     return contract;
   }
 
-
+*/
 
 }
 

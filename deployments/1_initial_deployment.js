@@ -25,11 +25,19 @@ const provider = new HDWalletProvider(
    0,
    10
 );
-
 const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
-const compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
+ 
 
-testDeploy();
+let compiled;
+
+run();
+
+async function run() {
+  compiled = config.root ? await compile(config.root) : await compile(defaultConfig.root);
+  console.log("FFFF===============================================================")
+//  await testDeploy();
+  console.log("GGGG========================================================================")
+}
 
 async function testDeploy(){
   const accounts = await web3.eth.getAccounts();
@@ -134,7 +142,7 @@ Print: as many '=' chars as above line
 //////////////////////////////////////////////////////////////////////
 
 //Verifying contracts:
-
+/*
 const axios = require('axios'); 
 
 let contractObj = DeployUtil.extractContract(compiled, "Calculator");
@@ -188,4 +196,4 @@ async function verifyContract(contract, address, filepath) {
 
   
 
-}
+}*/
