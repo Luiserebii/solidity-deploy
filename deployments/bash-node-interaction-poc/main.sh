@@ -14,6 +14,15 @@ headline () {
   echo -e "\e[0m"
 }
 
+split() {
+  
+  IFSSAVE=IFS
+  IFS=$1
+  read -ra output <<< "$output";
+  # Reset IFS
+  IFS=$IFSSAVE
+}
+
 main="./main-script.js"
 
 a=0
@@ -29,10 +38,26 @@ b=1
 
 
 # Read output, loop for C value
-node $main --a 1 --b 2
+output=$(node $main -a 1 -b 2)
+echo "AAAA $output"
+# Call split with \n, which will take output and cut it for us
+split "\n"
+
+echo "ZXFREWQ  ${#output[@]}"
+
+#echo "meme";
+for i in "${output[@]}"; do # access each element of array
+  zoot="$i"
+  echo "HEY $zoot"
+  if [[ "$zoot" == *"C:"* ]]; then
+    echo "balls"
+    echo "$i"
+    echo "eee"
+  fi
+done
 
 # Print in BASH as well
-headline a b
+headline $a $b
 
 # Take B and C, and funnel it back into node
 
