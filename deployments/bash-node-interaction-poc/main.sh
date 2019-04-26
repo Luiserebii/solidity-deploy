@@ -66,10 +66,6 @@ headline $a $b $c
 # Take B and C, and funnel it back into node
 
 
-# PID=$!
-# sudo kill -INT $PID
-
-
 echo "end of script"
 
 ##########################
