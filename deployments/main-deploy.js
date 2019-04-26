@@ -97,7 +97,9 @@ async function deployContract(contract, args, sendOptions){
       .on('confirmation', (num, receipt) => {
         console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
         if(num === 2) {
-          console.log("resolving...");
+          console.log("...");
+          console.log("Confirmed!");
+          console.log("\n\nExtra confirmations:\n")
           //resolve();
         }
       })
