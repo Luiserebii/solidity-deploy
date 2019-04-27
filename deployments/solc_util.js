@@ -93,6 +93,26 @@ class SolcUtil {
   }
 
 
+  //Generate input object, assuming Solidity as language, from singular contract
+  generateSolcInputSingle(filepath, root, verbose = true) {
+    let base = this.toSolcFilename(filepath, root);
+    let src = fs.readFileSync(filepath, 'utf8');
+    return generateSolcInputSinglePure(base, src, verbose);  
+  }
+
+  //Generate input object, assuming Solidity as language, from singular contract
+  //base simply for compiling (e.g. Meme.sol) (make this automatic in the future)
+  generateSolcInputSinglePure(base, src, verbose = true) {
+    let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
+    //By default, we will print all output, therefore, we directly stick the output settings above ^^^
+
+    input.sources[base] = { content: src };
+    if(verbose){ console.log("PROCESSED CONTRACT: " + base) };
+ 
+    return input;  
+  }
+
+
 
 }
 
