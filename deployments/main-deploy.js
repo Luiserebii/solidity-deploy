@@ -2,7 +2,8 @@
 
 //DEPLOYMENT:
 
-const compile = require('./compile');
+const Compiler = require('./compile');
+const compiler = new Compiler();
 const defaultConfig = require('./default_config')
 const deployutil = require('./deploy_util')
 const DeployUtil = new deployutil();
@@ -50,7 +51,7 @@ run();
 
 async function run() {
   accounts = await web3.eth.getAccounts();
-  compiled = config.root ? compile(config.root) : compile(defaultConfig.root);
+  compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
   const stage = args['stage'];
 
   switch(stage) {
