@@ -7,7 +7,7 @@ run();
 async function run(){
 
   flattener = new Flattener();
-  flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true, true);
+  await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true, true);
 
 }
 

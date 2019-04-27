@@ -71,10 +71,6 @@ class Compiler {
     // and running a function, like
     // "print(msg)" which would handle the logic internally based on the value passed
     // on initialization
-    /*if(verbose) {*/ console.log("Config: "); //}
-    /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}
-    /*if(verbose) {*/ console.log("\n") //}
-
     console.log("Generating solc_input...\n");
     const generatedInput = SolcUtil.generateSolcInputSinglePure(base, src);
     if(verbose) { console.log(util.inspect(generatedInput)); }
