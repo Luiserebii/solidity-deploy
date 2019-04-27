@@ -59,6 +59,41 @@ class Compiler {
 
   }
 
+  compileSinglePure(base, src, verbose = true, superverbose = false) {
+
+    // An interesting solution to the spamming of if(verbose) might be to create a
+    // seperate class containing the whole verbose logic, initialize it by passing
+    // in the verbose variable (which would be a bool (I don't think enum is possible))
+    //                    NOTE: enum may be possible; simply have different functions
+    //                    which highlight what kind of printing it is, such as
+    //                    printSuper(msg) which would only display if internal enum
+    //                    allows it 
+    // and running a function, like
+    // "print(msg)" which would handle the logic internally based on the value passed
+    // on initialization
+    /*if(verbose) {*/ console.log("Config: "); //}
+    /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}
+    /*if(verbose) {*/ console.log("\n") //}
+
+    console.log("Generating solc_input...\n");
+    const generatedInput = SolcUtil.generateSolcInputSinglePure(base, src);
+    if(verbose) { console.log(util.inspect(generatedInput)); }
+    if(verbose) { console.log("\n") }
+
+    console.log("Compiling...\n");
+    const output = JSON.parse(solc.compile(JSON.stringify(generatedInput))); 
+    //Logic on what to show post-compilation (regarding the output post-compilation)
+    if(superverbose) { 
+      console.log("OUTPUT"); 
+      console.log(util.inspect(output, { depth: null }));
+    } else if(output.errors) {
+      console.log("Error: "); 
+      console.log(util.inspect(output, { depth: null }));
+      throw "Failed to compile!";
+    }
+    return output;
+  }
+
   //Not working... :/ Uncertain how to handle this sort of callback stuff synchronously
   async getPackageVersion(module) {
     //Assume package-lock.json exists, by default
