@@ -5,14 +5,22 @@ const pp = new PrettyPrint();
 
 class Deployer {
 
-  //_compiled as an optional param, a way to sort of... 
-  constructor(_web3, _compiled = null) {
+  //_compiled as an optional param, a way to sort of... hmmm, should be property?
+  //NOTE: THIS IS NOT INTENDED TO BE CALLED; ONLY FOR PRIVATE USE. PLEASE USE BUILD INSTEAD!!!
+  constructor(_web3, _compiled = null, _accounts = null) {
     this.web3 = _web3;
-    this.accounts = await web3.eth.getAccounts();
+    this.accounts = _accounts;
     this.compiled = _compiled;
   }
 
-  async deploy(name, args = [], sender = { from: accounts[0] }, compiled=this.compiled){
+  //Not quite our builder pattern; here, we simply provide an alternate constructor
+  //Funny that a Deployer can return more deployers, but ehhh, ok
+  static async build(_web3, _compiled = null), {    
+    let accounts = await web3.eth.getAccounts();  
+    return new Deployer(_web3, _compiled, accounts);
+  }
+
+  async deploy(name, args = [], sender = { from: this.accounts[0] }, compiled=this.compiled){
     if(!compiled) { throw "No compilation material provided to deployer!"; }
     console.log("Accounts:   " + this.accounts + "\n");
     const contractInput = DeployUtil.extractContract(compiled, "Calculator");

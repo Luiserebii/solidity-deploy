@@ -54,7 +54,7 @@ run();
 async function run() {
   //accounts = await web3.eth.getAccounts();
   compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
-  const deployer = new Deployer(web3, compiled);
+  const deployer = await Deployer.build(web3, compiled);
 
   const stage = args['stage'];
 
