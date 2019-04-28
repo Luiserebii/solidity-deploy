@@ -5,10 +5,10 @@
 const Compiler = require('./compile');
 const compiler = new Compiler();
 const defaultConfig = require('./default_config')
-const deployutil = require('./deploy_util')
-const DeployUtil = new deployutil();
-const PrettyPrint = require('./pretty-print');
-const pp = new PrettyPrint();
+//const deployutil = require('./deploy_util')
+//const DeployUtil = new deployutil();
+//const PrettyPrint = require('./pretty-print');
+//const pp = new PrettyPrint();
 const util = require('util');
 
 const fs = require('fs');
@@ -16,6 +16,8 @@ const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const config = require('../deploy-config');
+
+
 
 console.log(config)
 
@@ -27,8 +29,8 @@ const provider = new HDWalletProvider(
    10
 );
 const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
-let accounts;
-
+//let accounts;
+const Deployer = require('./deployer');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
  
@@ -50,13 +52,15 @@ run();
 
 
 async function run() {
-  accounts = await web3.eth.getAccounts();
+  //accounts = await web3.eth.getAccounts();
   compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
+  const deployer = new Deployer(web3, compiled);
+
   const stage = args['stage'];
 
   switch(stage) {
     case Stage.CALCULATOR: 
-      await deploy("Calculator");
+      await deployer.deploy("Calculator");
 
       break;
    /* case Stage.:

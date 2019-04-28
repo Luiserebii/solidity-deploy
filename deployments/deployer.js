@@ -1,16 +1,24 @@
-
-
+const deployutil = require('./deploy_util')
+const DeployUtil = new deployutil();
+const PrettyPrint = require('./pretty-print');
+const pp = new PrettyPrint();
 
 class Deployer {
 
+  //_compiled as an optional param, a way to sort of... 
+  constructor(_web3, _compiled = null) {
+    this.web3 = _web3;
+    this.accounts = await web3.eth.getAccounts();
+    this.compiled = _compiled;
+  }
 
-
-  async deploy(name, args = [], sender = { from: accounts[0] }){
-    console.log("Accounts:   " + accounts + "\n");
+  async deploy(name, args = [], sender = { from: accounts[0] }, compiled=this.compiled){
+    if(!compiled) { throw "No compilation material provided to deployer!"; }
+    console.log("Accounts:   " + this.accounts + "\n");
     const contractInput = DeployUtil.extractContract(compiled, "Calculator");
     console.log(contractInput);
 
-    let Contract = await deployContract(contractInput, args, sender);
+    let Contract = await this.deployContract(contractInput, args, sender);
     return Contract;
   }
 
