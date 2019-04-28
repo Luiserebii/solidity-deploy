@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
-const util = require('util')
+const util = require('util');
 
 const solcutil = require('./solc_util');
 const SolcUtil = new solcutil();

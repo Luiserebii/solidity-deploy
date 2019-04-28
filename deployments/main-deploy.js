@@ -4,18 +4,22 @@
 
 const Compiler = require('./compile');
 const compiler = new Compiler();
+const Deployer = require('./deployer');
 const defaultConfig = require('./default_config')
-const util = require('util');
 
 const fs = require('fs');
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
+const util = require('util');
+
 const config = require('../deploy-config');
+console.log(config);
+
+const minimist = require('minimist');
+const args = minimist(process.argv.slice(2));
 
 
-
-console.log(config)
 
 const provider = new HDWalletProvider(
    config.mnemonic, 
@@ -24,17 +28,7 @@ const provider = new HDWalletProvider(
    0,
    10
 );
-const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
-const Deployer = require('./deployer');
-const minimist = require('minimist');
-const args = minimist(process.argv.slice(2));
- 
-//Sample 
-/*
- * main-deploy.js -- 
- */
-
-
+const web3 = new Web3(provider);
 const Stage = {
   CALCULATOR: 1
 }
