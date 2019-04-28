@@ -5,10 +5,6 @@
 const Compiler = require('./compile');
 const compiler = new Compiler();
 const defaultConfig = require('./default_config')
-//const deployutil = require('./deploy_util')
-//const DeployUtil = new deployutil();
-//const PrettyPrint = require('./pretty-print');
-//const pp = new PrettyPrint();
 const util = require('util');
 
 const fs = require('fs');
@@ -29,7 +25,6 @@ const provider = new HDWalletProvider(
    10
 );
 const web3 = new Web3(provider, null, { transactionConfirmationBlocks: 2 }); //This isn't quite working.... hmmmm, darn.
-//let accounts;
 const Deployer = require('./deployer');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
@@ -38,8 +33,6 @@ const args = minimist(process.argv.slice(2));
 /*
  * main-deploy.js -- 
  */
-
-let compiled;
 
 
 const Stage = {
@@ -52,8 +45,7 @@ run();
 
 
 async function run() {
-  //accounts = await web3.eth.getAccounts();
-  compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
+  const compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
   const deployer = await Deployer.build(web3, compiled);
 
   const stage = args['stage'];
@@ -73,106 +65,6 @@ async function run() {
   }
 
 }
-/*
-async function deploy(name, args = [], sender = { from: accounts[0] }){
-  console.log("Accounts:   " + accounts + "\n");
-  const contractInput = DeployUtil.extractContract(compiled, "Calculator");
-  console.log(contractInput);
-
-  let Contract = await deployContract(contractInput, args, sender);
-  return Contract;
-}
-
-async function deployContract(contract, args, sendOptions){
- 
-  console.log(pp.miniheadline("Deploying " + contract.name));
-  let contractWeb3 = await (new web3.eth.Contract(contract.abi)
-      .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
-      .send(sendOptions)
-      .on('receipt', (receipt) => {
-        console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
-        console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
-        console.log(pp.arrow("contract address: " + receipt.contractAddress));
-        console.log(pp.arrow("from: " + receipt.from));
-        console.log(pp.arrow("block number: " + receipt.blockNumber));
-        console.log(pp.arrow("gas used: " + receipt.gasUsed));
-        console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
-        
-      })
-      .on('confirmation', (num, receipt) => {
-        console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
-        if(num === 2) {
-          console.log("...");
-          console.log("Confirmed!");
-          console.log("\n\nExtra confirmations:\n")
-          //resolve();
-        }
-      })
-      .on('error', (err) => { console.log(err); }));
-  return contractWeb3;
-}
-*/
-//Deployment logic:
-
-//Takes a Contract object, parameters, and an optional object to pass to send
-//contract, args = [], sendobj = {}
-//
-//NumberContract = await new web3.eth.Contract(JSON.parse(contract.interface))
-//    .deploy({data: '0x' + contract.bytecode, args: []})
-//    .send(sendobj)
-
-//deploy function, takes a contract object (name, interface, bytecode)
-//  Print intro headline
-//   Deploy, await receipt
-//  Print receipt info
-//  Listen for confirmations (likely through .then())
-//   follow up
-//   etc., etc.
-
-
-//Print functions (returns a string, which is then printed):
-//
-// for "> "
-// for headlines (adding ==== below as well)
-// for mini-headlines (adding ---- below as well)
-
-/*
-
-Print: "Starting deployment..." 
-Print: as many '=' chars as above line
-
-Print: "Addresses:"
-Print array of addresses
-
-
-//For each contract:
-Print: "Deploying 'CONTRACTNAME'"
-Print: as many '-' chars as above line
-
-Print:
-"> transaction hash: "   
-"> contract address: "
-"> account: "
-"> balance: "
-//Other details...
-
-Print: "Pausing for 2 confirmations..."
-Print: as many '-' as above line
-"> confirmation number: [NUMBER] (block: [BLOCKNUMBER])"
-
-Print: "Summary"
-Print: as many '=' chars as above line
-"> Total deployments: [NUMBER]"
-*/
-
-
-
-//NOTE: ON CONTRACT CLASS:
-// class Contract()
-//   internal var raw
-// get interface()
-// get bytecode()
-
 
 //////////////////////////////////////////////////////////////////////
 
