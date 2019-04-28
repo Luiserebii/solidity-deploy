@@ -13,51 +13,55 @@
 
 class Logger {
 
-  const state = {
-    NONE: 0,
-    MIN: 1, 
-    NORMAL: 2,
-    SUPER: 3,
-    MASTER: 4
+  //const state = {} enum equivalent
+  static get state() {
+    return {
+      NONE: 0,
+      MIN: 1, 
+      NORMAL: 2,
+      SUPER: 3,
+      MASTER: 4
+    }
   };
-
-  constructor(_setting = this.state.NORMAL) {
+  
+                         //Have to name it explicitly
+  constructor(_setting = Logger.state.NORMAL) {
     this.setting = _setting;
   }
 
   //Print "Normal", as in "verbose"
   printNormal(msg) {
-    validate(this.state.NORMAL) ? this.print(msg) : ;
+    if(validate(Logger.state.NORMAL)) this.print(msg);
   }
 
   //Print "Normal", as in "verbose"
   printMinimal(msg) {
-    validate(this.state.MIN) ? this.print(msg) : ;
+    if(validate(Logger.state.MIN)) this.print(msg);
   }
 
   //Print "Super", as in "super-verbose"
   printSuper(msg) {
-    validate(this.state.SUPER) ? this.print(msg) : ;
+    if(validate(Logger.state.SUPER)) this.print(msg);
   }
 
   //Print "Master", as in absolutely-verbose
   printMaster(msg) {
-    validate(this.state.MASTER) ? this.print(msg) : ;
+    if(validate(Logger.state.MASTER)) this.print(msg);
   }
  
   //Function defining print functionality itself
   print(arg1, arg2) {
     arguments.length === 1 
-      ? this.pureprint(arg1);
-      : { //lol these {} don't do anything
+      ? this.pureprint(arg1)
+      : //lol these {} don't do anything
 
           this.validate(arg1) 
             ? arguments.length === 2
               ? this.pureprint(arg2)
               : this.pureprintMulti(Array.from(arguments).slice(1)) 
-            : return false; 
+            : false; 
           
-        }
+       
       ;
     return true;
   }
