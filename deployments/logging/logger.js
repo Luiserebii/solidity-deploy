@@ -61,7 +61,7 @@ class Logger {
       if(arguments.length === 2){
         this.pureprint(arg2)
       } else {
-        this.pureprintMulti(Array.from(arguments).slice(1)) 
+        this.pureprintMulti(...Array.from(arguments).slice(1)) 
       }
      
     }

@@ -10,32 +10,40 @@ const Logger = require('./logging/logger');
 
 class Compiler {
   
-  constructor(logset) {
-    this.log = new Logger(logset);
+  constructor(logSetting = Logger.state.NORMAL) {
+    this.log = new Logger(logSetting);
   }
 
 
   compile(root = path.resolve(__dirname, '../contracts'), verbose = true, superverbose = false) {
 
     //Idea; make log.printM take multiple string params, and print them individually (done for syntactical sugar and all)
-    log.printM("Config: ");
-    log.printM("  Root contract directory: " + root);
-    log.printM("\n");
+    this.log.print(Logger.state.MASTER, 
+      "Config: ",
+      "  Root contract directory: " + root,
+      "\n"
+    );
+    this.log.print(Logger.state.NORMAL, "Generating solc_input...\n");
 
-    log.printN("Generating solc_input...\n");
     const generatedInput = SolcUtil.generateSolcInput(root);
-    log.printS(util.inspect(generatedInput));
-    log.printS("\n");
+    this.log.print(Logger.state.SUPER, 
+      util.inspect(generatedInput),
+      "\n"
+    );
 
-    log.printN("Compiling...\n");
+    this.log.print(Logger.state.NORMAL, "Compiling...\n");
     const output = JSON.parse(solc.compile(JSON.stringify(generatedInput))); 
     //Logic on what to show post-compilation (regarding the output post-compilation)
-    if(superverbose) { 
-      console.log("OUTPUT"); 
-      console.log(util.inspect(output, { depth: null }));
+    if(this.log.setting >= Logger.state.SUPER) {
+      this.log.print(Logger.state.SUPER,
+        "OUTPUT",
+        util.inspect(output, { depth: null })
+      );
     } else if(output.errors) {
-      console.log("Error: "); 
-      console.log(util.inspect(output, { depth: null }));
+      this.log.print(Logger.state.NORMAL,
+        "Error: ",
+        util.inspect(output, { depth: null })
+      );
       throw "Failed to compile!";
     }
     return output;
