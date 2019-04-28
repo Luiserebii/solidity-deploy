@@ -15,8 +15,8 @@ class Deployer {
 
   //Not quite our builder pattern; here, we simply provide an alternate constructor
   //Funny that a Deployer can return more deployers, but ehhh, ok
-  static async build(_web3, _compiled = null), {    
-    let accounts = await web3.eth.getAccounts();  
+  static async build(_web3, _compiled = null) {    
+    let accounts = await _web3.eth.getAccounts();  
     return new Deployer(_web3, _compiled, accounts);
   }
 
@@ -33,7 +33,7 @@ class Deployer {
   async deployContract(contract, args, sendOptions){
 
     console.log(pp.miniheadline("Deploying " + contract.name));
-    let contractWeb3 = await (new web3.eth.Contract(contract.abi)
+    let contractWeb3 = await (new this.web3.eth.Contract(contract.abi)
         .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
         .send(sendOptions)
         .on('receipt', (receipt) => {
