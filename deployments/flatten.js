@@ -23,7 +23,7 @@ class Flattener {
     //TODO: Throw error if not an array
     const src = await this.flatten([filepath]);
 
-    const compiled = compiler.compileSinglePure(base, src);
+    const compiled = compiler.compileSinglePure(base, src, verbose, superverbose);
     return compiled;
   }
 

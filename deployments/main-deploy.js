@@ -69,7 +69,7 @@ async function run() {
   }
 
 }
-
+/*
 async function deploy(name, args = [], sender = { from: accounts[0] }){
   console.log("Accounts:   " + accounts + "\n");
   const contractInput = DeployUtil.extractContract(compiled, "Calculator");
@@ -107,7 +107,7 @@ async function deployContract(contract, args, sendOptions){
       .on('error', (err) => { console.log(err); }));
   return contractWeb3;
 }
-
+*/
 //Deployment logic:
 
 //Takes a Contract object, parameters, and an optional object to pass to send
