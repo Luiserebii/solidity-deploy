@@ -49,12 +49,23 @@ class Logger {
   print(arg1, arg2) {
     arguments.length === 1 
       ? this.pureprint(arg1);
-      : {
+      : { //lol these {} don't do anything
 
-          this.validate(arg1) ? this.pureprint(arg2) : return false; 
+          this.validate(arg1) 
+            ? arguments.length === 2
+              ? this.pureprint(arg2)
+              : this.pureprintMulti(Array.from(arguments).slice(1)) 
+            : return false; 
           
         }
       ;
+    return true;
+  }
+
+  pureprintMulti() {
+    for(let i = 0; i < arguments.length; i++) {
+      this.pureprint(arguments[i]);
+    }
     return true;
   }
 
