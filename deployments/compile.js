@@ -6,20 +6,28 @@ const util = require('util');
 const solcutil = require('./solc_util');
 const SolcUtil = new solcutil();
 
+const Logger = require('./logging/logger');
+
 class Compiler {
+  
+  constructor(logset) {
+    this.log = new Logger(logset);
+  }
+
 
   compile(root = path.resolve(__dirname, '../contracts'), verbose = true, superverbose = false) {
 
-    /*if(verbose) {*/ console.log("Config: "); //}
-    /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}
-    /*if(verbose) {*/ console.log("\n") //}
+    //Idea; make log.printM take multiple string params, and print them individually (done for syntactical sugar and all)
+    log.printM("Config: ");
+    log.printM("  Root contract directory: " + root);
+    log.printM("\n");
 
-    console.log("Generating solc_input...\n");
+    log.printN("Generating solc_input...\n");
     const generatedInput = SolcUtil.generateSolcInput(root);
-    if(verbose) { console.log(util.inspect(generatedInput)); }
-    if(verbose) { console.log("\n") }
+    log.printS(util.inspect(generatedInput));
+    log.printS("\n");
 
-    console.log("Compiling...\n");
+    log.printN("Compiling...\n");
     const output = JSON.parse(solc.compile(JSON.stringify(generatedInput))); 
     //Logic on what to show post-compilation (regarding the output post-compilation)
     if(superverbose) { 
