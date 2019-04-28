@@ -25,23 +25,40 @@ class Logger {
     this.setting = _setting;
   }
 
-  //Print "Super", as in "super-verbose"
-  printN(msg) {
+  //Print "Normal", as in "verbose"
+  printNormal(msg) {
     validate(this.state.NORMAL) ? this.print(msg) : ;
   }
 
+  //Print "Normal", as in "verbose"
+  printMinimal(msg) {
+    validate(this.state.MIN) ? this.print(msg) : ;
+  }
+
   //Print "Super", as in "super-verbose"
-  printS(msg) {
+  printSuper(msg) {
     validate(this.state.SUPER) ? this.print(msg) : ;
   }
 
   //Print "Master", as in absolutely-verbose
-  printM(msg) {
+  printMaster(msg) {
     validate(this.state.MASTER) ? this.print(msg) : ;
   }
  
   //Function defining print functionality itself
-  print(msg) {
+  print(arg1, arg2) {
+    arguments.length === 1 
+      ? this.pureprint(arg1);
+      : {
+
+          this.validate(arg1) ? this.pureprint(arg2) : return false; 
+          
+        }
+      ;
+    return true;
+  }
+
+  pureprint(msg) {
     console.log(msg);
   }
 
