@@ -51,18 +51,20 @@ class Logger {
  
   //Function defining print functionality itself
   print(arg1, arg2) {
-    arguments.length === 1 
-      ? this.pureprint(arg1)
-      : //lol these {} don't do anything
 
-          this.validate(arg1) 
-            ? arguments.length === 2
-              ? this.pureprint(arg2)
-              : this.pureprintMulti(Array.from(arguments).slice(1)) 
-            : false; 
-          
-       
-      ;
+    if(arguments.length === 1) {
+
+      this.pureprint(arg1)
+
+    } else if(this.validate(arg1)){
+
+      if(arguments.length === 2){
+        this.pureprint(arg2)
+      } else {
+        this.pureprintMulti(Array.from(arguments).slice(1)) 
+      }
+     
+    }
     return true;
   }
 
