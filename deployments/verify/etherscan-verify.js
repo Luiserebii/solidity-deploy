@@ -1,6 +1,7 @@
 /*
  *  INCOMPLETE CLASS: SIMPLY TESTING FOR PROOF OF WORKING ATM
- *  
+ *  Lacks refactoring, better use of config, etc. etc.  
+ *
  *  FUTURE: Integrate Logger class.js
  */
 
@@ -12,9 +13,13 @@ const DeployUtil = new deployutil();
 const config = require('../config/deploy-config');
 const defaultConfig = require('../config/default-config');
 
+const fs = require('fs');
 const path = require('path');
 const axios = require('axios'); 
 const util = require('util');
+
+
+/////////////////////////////////////////////////////
 
 //Verifying contracts:
 const compiled = config.root ? compiler.compileDirectory(config.root) : compiler.compileDirectory(defaultConfig.root);
@@ -26,6 +31,7 @@ console.log("Verifying contract: " + util.inspect(contractObj));
 console.log("Address: " + addr);
 console.log(".sol file location: " + solFile);
 
+/////////////////////////////////////////////////////
 
 class EtherscanVerify {
 
@@ -72,6 +78,11 @@ class EtherscanVerify {
   }
 
 }
+
+///////////////////////////////////////////////////////////////
+let testverify = new EtherscanVerify();
+testverify.verifyContract(contractObj, addr, solFile);
+///////////////////////////////////////////////////////////////
 
 
 module.exports = EtherscanVerify;
