@@ -9,6 +9,19 @@
  *   NONE, NORMAL, SUPER, MASTER
  * (MIN, as in minimal [potentialy between NONE and MIN])
  *
+ *
+ * Inspiration for this class:  
+ *   // An interesting solution to the spamming of if(verbose) might be to create a
+ *   // seperate class containing the whole verbose logic, initialize it by passing
+ *   // in the verbose variable (which would be a bool (I don't think enum is possible))
+ *   //                    NOTE: enum may be possible; simply have different functions
+ *   //                    which highlight what kind of printing it is, such as
+ *   //                    printSuper(msg) which would only display if internal enum
+ *   //                    allows it 
+ *   // and running a function, like
+ *   // "print(msg)" which would handle the logic internally based on the value passed
+ *   // on initialization
+ *
  */
 
 class Logger {

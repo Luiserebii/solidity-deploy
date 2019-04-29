@@ -15,7 +15,7 @@ class Compiler {
   }
 
 
-  compile(root = path.resolve(__dirname, '../contracts'), verbose = true, superverbose = false) {
+  compile(root = path.resolve(__dirname, '../contracts')) {
 
     //Idea; make log.printM take multiple string params, and print them individually (done for syntactical sugar and all)
     this.log.print(Logger.state.MASTER, 
@@ -49,26 +49,34 @@ class Compiler {
     return output;
   }
 
-  compileSingle(filepath, root = path.resolve(__dirname, '../contracts'), verbose = true, superverbose = false) {
+  compileSingle(filepath, root = path.resolve(__dirname, '../contracts')) {
 
-    /*if(verbose) {*/ console.log("Config: "); //}
-    /*if(verbose) {*/ console.log("  Root contract directory: " + root); //}
-    /*if(verbose) {*/ console.log("\n") //}
+    this.log.print(Logger.state.MASTER, 
+      "Config: ",
+      "  Root contract directory: " + root,
+      "\n"
+    );
 
-    console.log("Generating solc_input...\n");
+    this.log.print(Logger.state.NORMAL, "Generating solc_input...\n");
     const generatedInput = SolcUtil.generateSolcInputSingle(filepath, root);
-    if(verbose) { console.log(util.inspect(generatedInput)); }
-    if(verbose) { console.log("\n") }
+    this.log.print(Logger.state.SUPER, 
+      util.inspect(generatedInput),
+      "\n"
+    );
 
-    console.log("Compiling...\n");
+    this.log.print(Logger.state.NORMAL, "Compiling...\n");
     const output = JSON.parse(solc.compile(JSON.stringify(generatedInput))); 
     //Logic on what to show post-compilation (regarding the output post-compilation)
-    if(superverbose) { 
-      console.log("OUTPUT"); 
-      console.log(util.inspect(output, { depth: null }));
+    if(this.log.setting >= Logger.state.SUPER) {
+      this.log.print(Logger.state.SUPER,
+        "OUTPUT",
+        util.inspect(output, { depth: null })
+      );
     } else if(output.errors) {
-      console.log("Error: "); 
-      console.log(util.inspect(output, { depth: null }));
+      this.log.print(Logger.state.NORMAL,
+        "Error: ",
+        util.inspect(output, { depth: null })
+      );
       throw "Failed to compile!";
     }
     return output;
@@ -77,16 +85,6 @@ class Compiler {
 
   compileSinglePure(base, src, verbose = true, superverbose = false) {
 
-    // An interesting solution to the spamming of if(verbose) might be to create a
-    // seperate class containing the whole verbose logic, initialize it by passing
-    // in the verbose variable (which would be a bool (I don't think enum is possible))
-    //                    NOTE: enum may be possible; simply have different functions
-    //                    which highlight what kind of printing it is, such as
-    //                    printSuper(msg) which would only display if internal enum
-    //                    allows it 
-    // and running a function, like
-    // "print(msg)" which would handle the logic internally based on the value passed
-    // on initialization
     console.log("Generating solc_input...\n");
     const generatedInput = SolcUtil.generateSolcInputSinglePure(base, src);
     if(verbose) { console.log(util.inspect(generatedInput)); }

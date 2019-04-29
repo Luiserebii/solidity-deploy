@@ -2,7 +2,13 @@ const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
 
+const Logger = require('./logging/logger';)
+
 class SolcUtil {
+
+  constructor(logSetting = Logger.state.NORMAL) {
+    this.log = new Logger(logSetting);
+  }
 
   //This needs to be improved by using some sort of "node.js path equivalent"
   toSolcFilename(filepath, root) {
@@ -54,7 +60,7 @@ class SolcUtil {
   }
 
   //Generate input object, assuming Solidity as language, from filepath of sources
-  generateSolcInput(root, verbose = true) {
+  generateSolcInput(root) {
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
@@ -72,7 +78,7 @@ class SolcUtil {
       if(base !== "Migrations.sol") {
         let src = fs.readFileSync(files[i], 'utf8');
         input.sources[base] = { content: src };
-        if(verbose){ console.log("PROCESSED CONTRACT: " + base) };
+        this.log.print(Logger.state.NORMAL, "PROCESSED CONTRACT: " + base);
       }
     }
     return input;  
@@ -80,21 +86,21 @@ class SolcUtil {
   }
 
   //Generate input object, assuming Solidity as language, from singular contract
-  generateSolcInputSingle(filepath, root, verbose = true) {
+  generateSolcInputSingle(filepath, root) {
     let base = this.toSolcFilename(filepath, root);
     let src = fs.readFileSync(filepath, 'utf8');
-    return this.generateSolcInputSinglePure(base, src, verbose);  
+    return this.generateSolcInputSinglePure(base, src);  
   }
 
   //Generate input object, assuming Solidity as language, from singular contract
   //base simply for compiling (e.g. Meme.sol) (make this automatic in the future)
-  generateSolcInputSinglePure(base, src, verbose = true) {
+  generateSolcInputSinglePure(base, src) {
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
     input.sources[base] = { content: src };
-    if(verbose){ console.log("PROCESSED CONTRACT: " + base) };
- 
+    this.log.print(Logger.state.NORMAL, "PROCESSED CONTRACT: " + base);
+
     return input;  
   }
 
