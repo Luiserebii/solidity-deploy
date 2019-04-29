@@ -5,7 +5,7 @@
 const Compiler = require('./compile/compiler');
 const compiler = new Compiler();
 const Deployer = require('./deploy/deployer');
-const defaultConfig = require('./default_config')
+const defaultConfig = require('./config/default-config')
 
 const fs = require('fs');
 const path = require('path');
@@ -13,7 +13,7 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const util = require('util');
 
-const config = require('../deploy-config');
+const config = require('./config/deploy-config');
 console.log(config);
 
 const minimist = require('minimist');

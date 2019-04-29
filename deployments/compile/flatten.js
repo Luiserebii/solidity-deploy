@@ -3,8 +3,8 @@ const Compiler = require('./compiler.js');
 const compiler = new Compiler();
 const path = require('path');
 
-const config = require('../deploy-config');
-const defaultConfig = require('./default_config');
+const config = require('../config/deploy-config');
+const defaultConfig = require('../config/default-config');
 
 class Flattener {
 
@@ -16,14 +16,14 @@ class Flattener {
     return await truffleFlattener(files);
   }
 
-  async flattenAndCompile(filepath, verbose = true, superverbose = false) {
+  async flattenAndCompile(filepath) {
     const root = config.root ? config.root : defaultConfig.root;
 
     const base = path.basename(filepath);
     //TODO: Throw error if not an array
     const src = await this.flatten([filepath]);
 
-    const compiled = compiler.compileSinglePure(base, src, verbose, superverbose);
+    const compiled = compiler.compileSource(base, src);
     return compiled;
   }
 
