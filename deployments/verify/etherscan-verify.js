@@ -4,11 +4,20 @@
  *  FUTURE: Integrate Logger class.js
  */
 
+const Compiler = require('../compile/compiler');
+const compiler = new Compiler();
+const deployutil = require('../deploy/deploy-util');
+const DeployUtil = new deployutil();
 
+const config = require('../config/deploy-config');
+const defaultConfig = require('../config/default-config');
+
+const path = require('path');
 const axios = require('axios'); 
-
+const util = require('util');
 
 //Verifying contracts:
+const compiled = config.root ? compiler.compileDirectory(config.root) : compiler.compileDirectory(defaultConfig.root);
 let contractObj = DeployUtil.extractContract(compiled, "Calculator");
 let addr = "0x5E0318D57c2F0d1262df93478A92EeDAd246A374";
 let solFile = path.resolve(config.root, contractObj.solFile);
@@ -21,7 +30,7 @@ console.log(".sol file location: " + solFile);
 class EtherscanVerify {
 
   //Takes the following: (contractObj, addr, solFile);
-  async function verifyContract(contract, address, filepath) {
+  async verifyContract(contract, address, filepath) {
 
     let data = {
       apikey: config.etherscan.apiKey,
