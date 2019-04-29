@@ -2,9 +2,9 @@
 
 //DEPLOYMENT:
 
-const Compiler = require('./compile');
+const Compiler = require('./compile/compiler');
 const compiler = new Compiler();
-const Deployer = require('./deployer');
+const Deployer = require('./deploy/deployer');
 const defaultConfig = require('./default_config')
 
 const fs = require('fs');
@@ -23,8 +23,7 @@ const args = minimist(process.argv.slice(2));
 
 const provider = new HDWalletProvider(
    config.mnemonic, 
-   `https://rinkeby.infura.io/v3/${config.infuraKey}`
-   ,
+   `https://rinkeby.infura.io/v3/${config.infuraKey}`,
    0,
    10
 );
@@ -39,7 +38,7 @@ run();
 
 
 async function run() {
-  const compiled = config.root ? compiler.compile(config.root) : compiler.compile(defaultConfig.root);
+  const compiled = config.root ? compiler.compileDirectory(config.root) : compiler.compileDirectory(defaultConfig.root);
   const deployer = await Deployer.build(web3, compiled);
 
   const stage = args['stage'];

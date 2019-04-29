@@ -1,6 +1,6 @@
-const deployutil = require('./deploy_util')
+const deployutil = require('./deploy-util')
 const DeployUtil = new deployutil();
-const PrettyPrint = require('./pretty-print');
+const PrettyPrint = require('../styling/pretty-print');
 const pp = new PrettyPrint();
 
 class Deployer {

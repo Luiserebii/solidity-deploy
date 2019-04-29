@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
 
-const Logger = require('./logging/logger';)
+const Logger = require('../logging/logger');
 
 class SolcUtil {
 
@@ -60,7 +60,7 @@ class SolcUtil {
   }
 
   //Generate input object, assuming Solidity as language, from filepath of sources
-  generateSolcInput(root) {
+  generateSolcInputDirectory(root) {
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
@@ -86,7 +86,7 @@ class SolcUtil {
   }
 
   //Generate input object, assuming Solidity as language, from singular contract
-  generateSolcInputSingle(filepath, root) {
+  generateSolcInputFile(filepath, root) {
     let base = this.toSolcFilename(filepath, root);
     let src = fs.readFileSync(filepath, 'utf8');
     return this.generateSolcInputSinglePure(base, src);  
@@ -94,7 +94,7 @@ class SolcUtil {
 
   //Generate input object, assuming Solidity as language, from singular contract
   //base simply for compiling (e.g. Meme.sol) (make this automatic in the future)
-  generateSolcInputSinglePure(base, src) {
+  generateSolcInput(base, src) {
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 

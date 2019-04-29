@@ -1,5 +1,5 @@
 const truffleFlattener = require('truffle-flattener');
-const Compiler = require('./compile.js');
+const Compiler = require('./compiler.js');
 const compiler = new Compiler();
 const path = require('path');
 
