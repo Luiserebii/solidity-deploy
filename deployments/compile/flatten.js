@@ -1,6 +1,7 @@
 const truffleFlattener = require('truffle-flattener');
 const Compiler = require('./compiler');
 const Logger = require('../logging/logger')
+const fs = require('fs');
 const path = require('path');
 
 const config = require('../config/deploy-config');
@@ -15,16 +16,22 @@ class Flattener {
 
   //Files is essentially an array of filepaths to be passed, e.g. (['./contracts/meme.sol'])
   //Generic function in order to work with various kinds of flatteners
-  async flatten(files = []) {
-    return await truffleFlattener(files);
+  async flatten(files = [], filepath = null, writeToFile = false) {
+    const flattened = await truffleFlattener(files);
+    if(writeToFile){
+      const dir = path.resolve(__dirname, "../flattened/");
+      fs.writeFileSync(filepath, flattened);
+      this.log.print(Logger.state.SUPER, "Flattened file \"" + filepath + "\" written!");
+    }
+    return flattened;
   }
 
-  async flattenAndCompile(filepath) {
+  async flattenAndCompile(filepath, writeToFile = false) {
     const root = config.root ? config.root : defaultConfig.root;
 
     const base = path.basename(filepath);
     //TODO: Throw error if not an array
-    const src = await this.flatten([filepath]);
+    const src = writeToFile ? await this.flatten([filepath], path.resolve(__dirname, "../flattened/", base), true) : await this.flatten([filepath]);
 
     const compiled = this.compiler.compileSource(base, src);
     return compiled;
