@@ -44,17 +44,23 @@ async function run() {
   const stage = args['stage'];
 
   switch(stage) {
-    case Stage.CALCULATOR: 
+    case Stage.CALCULATOR:
       await deployer.deploy("Calculator");
 
       break;
-   /* case Stage.:
+    case Stage.NUMBER:
+
+      const compiledNumber = await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true);
+      const numberDeployer = await Deployer.build(web3, compiledNumber);
+      await deployer.deploy("Number");
 
       break;
-    case Stage.:
-  
+    case Stage.NUMBERBASIC:
+      const compiledNumberBasic = await flattener.flattenAndCompile('../contracts/main-contracts/NumberBasic.sol', true);
+      const numberBasicDeployer = await Deployer.build(web3, compiledNumberBasic);
+      await deployer.deploy("NumberBasic", [5]);
       break;
-*/
+
   }
 
 }
