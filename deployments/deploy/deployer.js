@@ -34,7 +34,7 @@ class Deployer {
 
     console.log(pp.miniheadline("Deploying " + contract.name));
     let contractWeb3 = await (new this.web3.eth.Contract(contract.abi)
-        .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "args": args })
+        .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "arguments": args })
         .send(sendOptions)
         .on('receipt', (receipt) => {
           console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
