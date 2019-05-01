@@ -1,0 +1,9 @@
+Note for Future Development
+----------------------------
+
+Some attempts to use this to deploy larger contracts, such as those in the Hydro Snowflake project (https://github.com/Luiserebii/HydroSnowflake-Marketplace-Coupons/) have failed; the contract seems to deploy, but there is a hanging where web3 fails to pick up on the receipt of the transaction. In other words, the contract will successfully deploy, but our interface will not pick up on this. This is a problem because this breaks the flow of automatic execution, to a point where all we can do it interrupt the process via sending EOF (e.g. pressing CTRL+C).
+
+There is one solution to make this a little smoother; have the shell script write to a file whenever a numbered process is cleared without error, and on execution, read to see if there is anything last executed successfully; if so, prompt the user to continue, otherwise, have it erase it and start from the beginning. In order to make this even smoother, should there not be any variable arguments provided for deployment, have it prompt the user for the arguments, should no flags be passed. 
+
+The idea is to at least provide a method of getting around this smoothly, leaving it as an issue for future development. This can at least result in a usable tool that is relatively smooth, even if it may require user input at some points.
+
