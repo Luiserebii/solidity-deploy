@@ -5,7 +5,10 @@
 const Compiler = require('./compile/compiler');
 const compiler = new Compiler();
 const Deployer = require('./deploy/deployer');
-const defaultConfig = require('./config/default-config')
+const Logger = require('./logging/logger')
+const defaultConfig = require('./config/default-config');
+const Flattener = require('./compile/flattener');
+const flattener = new Flattener(Logger.state.MASTER);
 
 const fs = require('fs');
 const path = require('path');
@@ -29,7 +32,9 @@ const provider = new HDWalletProvider(
 );
 const web3 = new Web3(provider);
 const Stage = {
-  CALCULATOR: 1
+  CALCULATOR: 1,
+  NUMBER: 2,
+  NUMBERBASIC: 3
 }
 
 //===========|MAIN|============//
@@ -52,13 +57,13 @@ async function run() {
 
       const compiledNumber = await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true);
       const numberDeployer = await Deployer.build(web3, compiledNumber);
-      await deployer.deploy("Number");
+      await numberDeployer.deploy("Number");
 
       break;
     case Stage.NUMBERBASIC:
       const compiledNumberBasic = await flattener.flattenAndCompile('../contracts/main-contracts/NumberBasic.sol', true);
       const numberBasicDeployer = await Deployer.build(web3, compiledNumberBasic);
-      await deployer.deploy("NumberBasic", [5]);
+      await numberBasicDeployer.deploy("NumberBasic", [5]);
       break;
 
   }

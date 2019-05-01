@@ -1,4 +1,4 @@
-const Flattener = require('./compile/flatten.js');
+const Flattener = require('./compile/flattener.js');
 const Logger = require('./logging/logger.js')
 
 run();
