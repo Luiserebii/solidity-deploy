@@ -1,5 +1,11 @@
+
+const Logger = require('../logging/logger');
+
 class DeployUtil {
 
+  constructor(logSetting = Logger.state.NORMAL) {
+    this.log = new Logger(logSetting);
+  }
 
   //Function which takes solc compiled output, a contract name to extract, and returns a convenience object
   //  this returned object contains name, abi, bytecode, and the raw solc output
@@ -11,14 +17,14 @@ class DeployUtil {
     //Let's just hang onto the reference of the filename as well...
     let sol;
     for(let solFile in output.contracts) {
-      console.log("Looking over " + solFile + "...");
+      log.print(Logger.state.SUPER, "Looking over " + solFile + "...");
       for(let c in output.contracts[solFile]) {
         console.log("    " + c);
         if(c === name) { 
           raw = output.contracts[solFile][c];
           sol = solFile;
           isFound = true;
-          console.log("Found contract!!!");
+          log.print(Logger.state.SUPER, "Found contract!!!");
         }
       }
     }
