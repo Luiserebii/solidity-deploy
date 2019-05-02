@@ -2,7 +2,7 @@
 
 //DEPLOYMENT:
 const Logger = require('./logging/logger')
-const defaultState = Logger.state.MASTER;
+const defaultState = Logger.state.NORMAL;
 const Compiler = require('./compile/compiler');
 const compiler = new Compiler(defaultState);
 const Deployer = require('./deploy/deployer');
@@ -10,6 +10,8 @@ const defaultConfig = require('./config/default-config');
 const Flattener = require('./compile/flattener');
 const flattener = new Flattener(defaultState);
 const inquirer = require('inquirer');
+const LogUtil = require('./logging/util')
+const logutil = new LogUtil();
 
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +20,7 @@ const Web3 = require('web3');
 const util = require('util');
 
 const config = require('./config/deploy-config');
-console.log(config);
+//console.log(config);
 
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
@@ -71,16 +73,4 @@ async function run() {
 
 }
 
-async function promptExistence(name, x) {
-  console.log("Prompting existence...")
-  if(!x) {
-    let answers = await inquirer.prompt([{ type: 'input', name: 'continue', message: 'Value ' + name + ' was not passed a value or has not been set. Continue?' }])
-    if(answers['continue'] == "y" || answers['continue'] == "Y" || answers['continue'].toLowerCase() == "yes") {
-      answers = await inquirer.prompt([{ type: 'input', name: 'value', message: 'Enter the value to be used: ' }]);
-      console.log("Using value: " + answers['value'] + "...");
-      return answers['value'];
-    } else {
-      process.exit(0);
-    }
-  }
-}
+

@@ -37,9 +37,6 @@ class EtherscanVerify {
 
   //Takes the following: (contractObj, addr, solFile);
   async verifyContract(contract, address, filepath) {
-    console.log("=======================================")
-    //console.log(contract.raw)
-    console.log(typeof contract.raw.metadata)
     let data = {
       apikey: config.etherscan.apiKey,
       module: 'contract',
