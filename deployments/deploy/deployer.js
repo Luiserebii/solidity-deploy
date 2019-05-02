@@ -37,11 +37,13 @@ class Deployer {
 
     console.log(pp.miniheadline("Deploying " + contract.name + '...'));
     const spinner = ora().start(); 
+    spinner.clear();
     let spinnerConf;
     let contractWeb3 = await (new this.web3.eth.Contract(contract.abi)
         .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "arguments": args })
         .send(sendOptions)
         .on('receipt', (receipt) => {
+          spinner.succeed();
           console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
           console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
           console.log(pp.arrow("contract address: " + receipt.contractAddress));
@@ -49,16 +51,16 @@ class Deployer {
           console.log(pp.arrow("block number: " + receipt.blockNumber));
           console.log(pp.arrow("gas used: " + receipt.gasUsed));
           console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
-          spinnerConf = ora().start();
+          spinnerConf = ora().start()
+          spinnerConf.clear();
 
         })
         .on('confirmation', (num, receipt) => {
           console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
           if(num === 2) {
+            spinnerConf.succeed();
             console.log("...");
             console.log("Confirmed!");
-            spinnerConf.succeed();
-            spinner.succeed();
 
             process.exit(0);
             console.log("\n\nExtra confirmations:\n")

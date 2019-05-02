@@ -62,7 +62,7 @@ class SolcUtil {
 
   //Generate input object, assuming Solidity as language, from filepath of sources
   generateSolcInputDirectory(root) {
-    const spinner = ora('Generating solc input from directory ' + root + '...');
+    const spinner = ora('Generating solc input from directory ' + root).start().clear();
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
