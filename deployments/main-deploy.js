@@ -2,7 +2,7 @@
 
 //DEPLOYMENT:
 const Logger = require('./logging/logger')
-const defaultState = Logger.state.NORMAL;
+const defaultState = Logger.state.MASTER;
 const Compiler = require('./compile/compiler');
 const compiler = new Compiler(defaultState);
 const Deployer = require('./deploy/deployer');

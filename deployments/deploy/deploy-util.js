@@ -33,8 +33,10 @@ class DeployUtil {
     
     const contract = {
       "name": name,
-      "abi": raw.abi,
-      "bytecode": raw.evm.bytecode.object,
+      get abi() { return this.raw.abi; },
+      get bytecode() { return this.raw.evm.bytecode.object; },
+      get compilerVersion() { return this.raw.metadata.compiler.version; },
+      get optimizer() { return this.raw.metadata.settings.optimizer; },
       "raw": raw,
       "solFile": sol
     }
