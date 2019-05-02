@@ -25,9 +25,9 @@ class Deployer {
 
   async deploy(name, args = [], sender = { from: this.accounts[0] }, compiled=this.compiled){
     if(!compiled) { throw "No compilation material provided to deployer!"; }
-    log.print(Logger.state.SUPER, "Accounts:   " + this.accounts + "\n");
+    this.log.print(Logger.state.SUPER, "Accounts:   " + this.accounts + "\n");
     const contractInput = DeployUtil.extractContract(compiled, name);
-    log.print(Logger.state.MASTER, contractInput);
+    this.log.print(Logger.state.MASTER, contractInput);
 
     let Contract = await this.deployContract(contractInput, args, sender);
     return Contract;

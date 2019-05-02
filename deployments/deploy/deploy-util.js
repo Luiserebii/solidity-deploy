@@ -17,14 +17,14 @@ class DeployUtil {
     //Let's just hang onto the reference of the filename as well...
     let sol;
     for(let solFile in output.contracts) {
-      log.print(Logger.state.SUPER, "Looking over " + solFile + "...");
+      this.log.print(Logger.state.SUPER, "Looking over " + solFile + "...");
       for(let c in output.contracts[solFile]) {
         console.log("    " + c);
         if(c === name) { 
           raw = output.contracts[solFile][c];
           sol = solFile;
           isFound = true;
-          log.print(Logger.state.SUPER, "Found contract!!!");
+          this.log.print(Logger.state.SUPER, "Found contract!!!");
         }
       }
     }
