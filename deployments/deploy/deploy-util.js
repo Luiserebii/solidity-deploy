@@ -35,8 +35,9 @@ class DeployUtil {
       "name": name,
       get abi() { return this.raw.abi; },
       get bytecode() { return this.raw.evm.bytecode.object; },
-      get compilerVersion() { return this.raw.metadata.compiler.version; },
-      get optimizer() { return this.raw.metadata.settings.optimizer; },
+      get metadata() { return JSON.parse(this.raw.metadata); }, //the metadata object is just a string, so let's parse for convenience...
+      get compilerVersion() { return this.metadata.compiler.version; },
+      get optimizer() { return this.metadata.settings.optimizer; },
       "raw": raw,
       "solFile": sol
     }
