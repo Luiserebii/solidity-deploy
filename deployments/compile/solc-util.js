@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
+const ora = require('ora');
 
 const Logger = require('../logging/logger');
 
@@ -61,6 +62,7 @@ class SolcUtil {
 
   //Generate input object, assuming Solidity as language, from filepath of sources
   generateSolcInputDirectory(root) {
+    const spinner = ora('Generating solc input from directory ' + root + '...');
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
@@ -78,9 +80,10 @@ class SolcUtil {
       if(base !== "Migrations.sol") {
         let src = fs.readFileSync(files[i], 'utf8');
         input.sources[base] = { content: src };
-        this.log.print(Logger.state.NORMAL, "PROCESSED CONTRACT: " + base);
+        this.log.print(Logger.state.SUPER, "PROCESSED CONTRACT: " + base);
       }
     }
+    spinner.succeed();
     return input;  
 
   }
@@ -95,11 +98,14 @@ class SolcUtil {
   //Generate input object, assuming Solidity as language, from singular contract
   //base simply for compiling (e.g. Meme.sol) (make this automatic in the future)
   generateSolcInput(base, src) {
+    
+    const spinner = ora('Generating solc input for ' + base + '...').start();
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
     //By default, we will print all output, therefore, we directly stick the output settings above ^^^
 
     input.sources[base] = { content: src };
     this.log.print(Logger.state.NORMAL, "PROCESSED CONTRACT: " + base);
+    spinner.succeed();
 
     return input;  
   }

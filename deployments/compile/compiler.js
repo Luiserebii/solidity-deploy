@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
 const util = require('util');
+const ora = require('ora');
 
 const solcutil = require('./solc-util');
 const SolcUtil = new solcutil();
@@ -23,7 +24,8 @@ class Compiler {
       "\n"
     );
 
-    this.log.print(Logger.state.NORMAL, "Compiling...\n");
+    //this.log.print(Logger.state.NORMAL, "Compiling...\n");
+    const spinner = ora('Compiling...\n').start();
     const output = JSON.parse(solc.compile(JSON.stringify(solcInput))); 
     //Logic on what to show post-compilation (regarding the output post-compilation)
     if(this.log.setting >= Logger.state.SUPER) {
@@ -32,12 +34,14 @@ class Compiler {
         util.inspect(output, { depth: null })
       );
     } else if(output.errors) {
+      spinner.fail();
       this.log.print(Logger.state.NORMAL,
         "Error: ",
         util.inspect(output, { depth: null })
       );
       throw "Failed to compile!";
     }
+    spinner.stop();
     return output;
   }
 

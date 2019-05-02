@@ -1,14 +1,14 @@
 /////////////////////////////////////////////////////
 
 //DEPLOYMENT:
-
-const Compiler = require('./compile/compiler');
-const compiler = new Compiler();
-const Deployer = require('./deploy/deployer');
 const Logger = require('./logging/logger')
+const defaultState = Logger.state.NORMAL;
+const Compiler = require('./compile/compiler');
+const compiler = new Compiler(defaultState);
+const Deployer = require('./deploy/deployer');
 const defaultConfig = require('./config/default-config');
 const Flattener = require('./compile/flattener');
-const flattener = new Flattener(Logger.state.MASTER);
+const flattener = new Flattener(defaultState);
 const inquirer = require('inquirer');
 
 const fs = require('fs');
