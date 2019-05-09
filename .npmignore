@@ -2,3 +2,6 @@
 *.swp
 docs
 test
+*.env
+deploy-config.js
+config.js
