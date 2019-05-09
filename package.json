@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test-truffle-deploy --recursive"
+    "test": "mocha test --recursive"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/Luiserebii/truffle-deploy#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "dotenv": "7.0.0",
     "inquirer": "^6.3.1",
     "minimist": "^1.2.0",
     "ora": "^3.4.0",
