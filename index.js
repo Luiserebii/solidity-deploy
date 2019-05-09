@@ -10,7 +10,15 @@
  */
 
 const defaultConfig = require('./config/default-config');
+
 const Compiler = require('./compile/compiler');
+const Flattener = require('./compile/flattener');
+const SolcUtil = require('./compile/solc-util');
+
+const Deployer = require('./deploy/deployer');
+const DeployUtil = require('./deploy/deploy-util');
+
+
 
 class TruffleDeploy {
   
@@ -23,7 +31,9 @@ class TruffleDeploy {
     return new Compiler(config, logSetting);
   }
   
-  
+  createFlattener(config=this.config, logSetting=undefined) {
+    return Flattener(config, logSetting);
+  }
   
   
   
@@ -31,4 +41,12 @@ class TruffleDeploy {
 }
 
 
-module.exports = TruffleDeploy;
+module.exports = {
+  TruffleDeploy
+};
+
+exports.Compiler = Compiler;
+exports.Flattener = Flattener;
+exports.SolcUtil = SolcUtil;
+exports.Deployer = Deployer;
+exports.DeployUtil = DeployUtil;
