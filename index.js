@@ -4,7 +4,7 @@
  * ================
  *
  * MIT License 
- * Copyright (c) 2018 Luiserebii
+ * Copyright (c) 2019 Luiserebii
  *
  *
  */
@@ -18,7 +18,11 @@ const SolcUtil = require('./compile/solc-util');
 const Deployer = require('./deploy/deployer');
 const DeployUtil = require('./deploy/deploy-util');
 
+const Logger = require('./logging/logger');
+const LogUtil = require('./logging/log-util');
 
+const PrettyPrint = require('./styling/pretty-print');
+const EtherscanVerify = require('./verify/etherscan-verify');
 
 class TruffleDeploy {
   
@@ -43,10 +47,29 @@ class TruffleDeploy {
 
 module.exports = {
   TruffleDeploy
-};
+}
 
-exports.Compiler = Compiler;
-exports.Flattener = Flattener;
-exports.SolcUtil = SolcUtil;
-exports.Deployer = Deployer;
-exports.DeployUtil = DeployUtil;
+
+exports.compile = {
+  Compiler,
+  Flattener,
+  SolcUtil
+}
+
+exports.deploy = {
+  Deployer,
+  DeployUtil
+}
+
+exports.logging = {
+  Logger,
+  LogUtil
+}
+
+exports.styling = {
+  PrettyPrint
+}
+
+exports.verify = {
+  EtherscanVerify
+}
