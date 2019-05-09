@@ -2,7 +2,7 @@
   "name": "truffle-deploy",
   "version": "0.0.1",
   "description": "Truffle deployment scripting package, ideally with automated Etherscan verification built-in!",
-  "main": "truffle-config.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
