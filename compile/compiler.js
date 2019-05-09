@@ -11,7 +11,8 @@ const Logger = require('../logging/logger');
 
 class Compiler {
   
-  constructor(logSetting = Logger.state.NORMAL) {
+  constructor(options, logSetting = Logger.state.NORMAL) {
+    this.options = options;
     this.log = new Logger(logSetting);
   }
 

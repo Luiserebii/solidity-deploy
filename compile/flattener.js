@@ -5,12 +5,13 @@ const fs = require('fs');
 const path = require('path');
 const ora = require('ora');
 
-const config = require('../config/deploy-config');
-const defaultConfig = require('../config/default-config');
+//const config = require('../config/deploy-config');
+//const defaultConfig = require('../config/default-config');
 
 class Flattener {
 
-  constructor(logSetting = Logger.state.NORMAL) {
+  constructor(options, logSetting = Logger.state.NORMAL) {
+    this.options = options;
     this.log = new Logger(logSetting);
     this.compiler = new Compiler(logSetting);
   }
@@ -32,7 +33,7 @@ class Flattener {
   }
 
   async flattenAndCompile(filepath, writeToFile = false) {
-    const root = config.root ? config.root : defaultConfig.root;
+    const root = this.options.root;
 
     const base = path.basename(filepath);
     //TODO: Throw error if not an array
