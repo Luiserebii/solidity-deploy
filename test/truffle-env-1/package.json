@@ -1,0 +1,22 @@
+{
+  "name": "truffle-env-1",
+  "version": "1.0.0",
+  "description": "Test environment for truffle-deploy npm package.",
+  "main": "truffle-config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.7",
+    "web3": "^1.0.0-beta.36"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4"
+  },
+  "scripts": {
+    "test": "mocha test --recursive"
+  },
+  "author": "Luiserebii",
+  "license": "MIT"
+}
