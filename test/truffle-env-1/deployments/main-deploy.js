@@ -1,30 +1,25 @@
 /////////////////////////////////////////////////////
 
 const TruffleDeploy = require('truffle-deploy');
+const config = require('./deploy-config');
 
+const truffleDeploy = new TruffleDeploy(config);
 
 //DEPLOYMENT:
-const Logger = require('./logging/logger')
+const Logger = new TruffleDeploy.logging.Logger();
 const defaultState = Logger.state.NORMAL;
-const Compiler = require('./compile/compiler');
-const compiler = new Compiler(defaultState);
-const Deployer = require('./deploy/deployer');
-const defaultConfig = require('./config/default-config');
-const Flattener = require('./compile/flattener');
-const flattener = new Flattener(defaultState);
-const inquirer = require('inquirer');
-const LogUtil = require('./logging/util')
-const logutil = new LogUtil();
+
+const compiler = truffleDeploy.createCompiler(undefined, defaultState);
+const Deployer = new TruffleDeploy.deploy.Deployer();
+const flattener = truffleDeploy.createFlattener(undefined, defaultState);
+const logutil = new TruffleDeploy.logging.LogUtil();
 
 const fs = require('fs');
 const path = require('path');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const util = require('util');
-
-const config = require('./config/deploy-config');
-//console.log(config);
-
+const inquirer = require('inquirer');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
 
