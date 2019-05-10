@@ -45,33 +45,33 @@ class TruffleDeploy {
 }
 
 
-exports = {
+module.exports = {
   TruffleDeploy
 }
 
 
-exports.compile = {
+module.exports.compile = {
   Compiler,
   Flattener,
   SolcUtil
 }
 
-exports.deploy = {
+module.exports.deploy = {
   Deployer,
   DeployUtil
 }
 
-exports.logging = {
+module.exports.logging = {
   Logger,
   LogUtil
 }
 
-exports.styling = {
+module.exports.styling = {
   PrettyPrint
 }
 
-exports.verify = {
+module.exports.verify = {
   EtherscanVerify
 }
 
-console.log(exports)
+//console.log(exports)
