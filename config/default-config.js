@@ -1,10 +1,11 @@
 const path = require('path');
-
+console.log("================")
+console.log(path.resolve('./'), path.resolve('../'))
 const defaultConfig = {
-  root: path.resolve(__dirname, '../../contracts'),
+  root: path.resolve('../contracts'),
   
   flatten: {
-    writeLocation: path.resolve(__dirname, "../../flattened")
+    writeLocation: path.resolve('../flattened')
   }
 };
 

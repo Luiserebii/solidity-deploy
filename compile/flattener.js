@@ -11,6 +11,7 @@ const ora = require('ora');
 class Flattener {
 
   constructor(options, logSetting = Logger.state.NORMAL) {
+    console.log("WITHIN CONSTRUCTOR: ", options)
     this.options = options;
     this.log = new Logger(logSetting);
     this.compiler = new Compiler(logSetting);

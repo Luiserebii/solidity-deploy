@@ -28,10 +28,7 @@ const util = require('util')
 class TruffleDeploy {
   
   constructor(config={}) {
-    console.log("WE ARE PASSED, IN CONSTRUCTOR: ", util.inspect(config));
     this.config = Object.assign(defaultConfig, config);
-    console.log("POST-OBJECT.ASSIGN: ", util.inspect(this.config))
-    
   }
 
 
@@ -40,7 +37,6 @@ class TruffleDeploy {
   }
   
   createFlattener(logSetting=undefined, config=this.config) {
-    console.log(config);
     return new Flattener(config, logSetting);
   }
   
