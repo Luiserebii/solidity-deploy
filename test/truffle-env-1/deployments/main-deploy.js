@@ -6,11 +6,13 @@ const config = require('./deploy-config');
 const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
 
 //DEPLOYMENT:
-const Logger = new TruffleDeploy.logging.Logger();
+const Logger = TruffleDeploy.logging.Logger;
+//console.log(TruffleDeploy.logging)
+//console.log("=================", Logger)
 const defaultState = Logger.state.NORMAL;
 
 const compiler = truffleDeploy.createCompiler(defaultState);
-const Deployer = new TruffleDeploy.deploy.Deployer();
+const Deployer = TruffleDeploy.deploy.Deployer;
 const flattener = truffleDeploy.createFlattener(defaultState);
 const logutil = new TruffleDeploy.logging.LogUtil();
 
