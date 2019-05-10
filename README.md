@@ -3,9 +3,13 @@
 
 solidity-deploy is an npm module which allows someone to create custom contract deployment scripts, including an abstracted compiler and flattener. Ideally, it also allows for smart contracts to be verified on Etherscan smoothly (still buggy).
 
-## Descripton
+<img src="https://i.imgur.com/BYwVqNx.gif"/>
+
+Sample run of a script using solidity-deploy. [Full video](https://www.youtube.com/watch?v=ZpFRX0Rv5_E)
+
+## Description
 Currently structured as a node module, with tests passing; however, there are a number of changes this project will go through, including but not limited to:
-- Addition of proper mocha tests (tests at this point are limited to a .sh script and mini-node script which runs deployments and flattening, respectively.)
+- Addition of proper Mocha tests (tests at this point are limited to a .sh script and mini-node script which runs deployments and flattening, respectively.)
 - API documentation
 
 At the moment, the module is currently reliant on [truffle-flattener](https://www.npmjs.com/package/truffle-flattener) for flattening; however, in the future, this will be phased out for a more general flattener, or at least give the user some choice on which flattener to use. 
@@ -20,4 +24,4 @@ A mirror of this repository is available at: https://serebii.io:2501/Luiserebii/
 ## Credits
 Thanks to those generous developers who entertained my questions, and helped me understand npm module design better!
 * [clemlak](https://github.com/clemlak)
-* <a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a>
+* <a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a> (as requested)
