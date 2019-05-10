@@ -23,11 +23,15 @@ const LogUtil = require('./logging/util');
 
 const PrettyPrint = require('./styling/pretty-print');
 const EtherscanVerify = require('./verify/etherscan-verify');
+const util = require('util')
 
 class TruffleDeploy {
   
   constructor(config={}) {
+    console.log("WE ARE PASSED, IN CONSTRUCTOR: ", util.inspect(config));
     this.config = Object.assign(defaultConfig, config);
+    console.log("POST-OBJECT.ASSIGN: ", util.inspect(this.config))
+    
   }
 
 
@@ -36,7 +40,8 @@ class TruffleDeploy {
   }
   
   createFlattener(config=this.config, logSetting=undefined) {
-    return Flattener(config, logSetting);
+    console.log(config);
+    return new Flattener(config, logSetting);
   }
   
   

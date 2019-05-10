@@ -1,6 +1,6 @@
 const truffleFlattener = require('truffle-flattener');
 const Compiler = require('./compiler');
-const Logger = require('../logging/logger')
+const Logger = require('../logging/logger');
 const fs = require('fs');
 const path = require('path');
 const ora = require('ora');
@@ -22,7 +22,7 @@ class Flattener {
     const spinner = ora('Flattening .sol file ' + filepath + '...').start();
     const flattened = await truffleFlattener(files);
     if(writeToFile){
-      const dir = path.resolve(__dirname, "../flattened/");
+      const dir = this.options.flatten.writeLocation;
       fs.writeFileSync(filepath, flattened);
       spinner.succeed();
       this.log.print(Logger.state.NORMAL, "Flattened file \"" + filepath + "\" written!");
