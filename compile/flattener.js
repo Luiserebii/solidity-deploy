@@ -11,7 +11,6 @@ const ora = require('ora');
 class Flattener {
 
   constructor(options, logSetting = Logger.state.NORMAL) {
-    console.log("WITHIN CONSTRUCTOR: ", options)
     this.options = options;
     this.log = new Logger(logSetting);
     this.compiler = new Compiler(logSetting);
@@ -38,7 +37,7 @@ class Flattener {
 
     const base = path.basename(filepath);
     //TODO: Throw error if not an array
-    const src = writeToFile ? await this.flatten([filepath], path.resolve(__dirname, "../flattened/", base), true) : await this.flatten([filepath]);
+    const src = writeToFile ? await this.flatten([filepath], path.resolve(this.options.flatten.writeLocation, base), true) : await this.flatten([filepath]);
 
     const compiled = this.compiler.compileSource(base, src);
     return compiled;
