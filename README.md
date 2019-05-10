@@ -14,6 +14,10 @@ Verification is still very buggy, needs success cases of verification via [Ether
 
 The general entry point of this module offers both initialization of a `SolidityDeploy` object, or access to any of the other classes directly. The advantage of using a `SolidityDeploy` object is avoiding repetition in passing options/config; the object supplies functions with the `create` prefix which handles this minimized 
 
+## Mirror
+A mirror of this repository is available at: https://serebii.io:2501/Luiserebii/solidity-deploy
+
 ## Credits
+Thanks to those generous developers who entertained my questions, and helped me understand npm module design better!
 * [clemlak](https://github.com/clemlak)
 * <a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a>
