@@ -13,7 +13,7 @@ class Flattener {
   constructor(options, logSetting = Logger.state.NORMAL) {
     this.options = options;
     this.log = new Logger(logSetting);
-    this.compiler = new Compiler(logSetting);
+    this.compiler = new Compiler(options, logSetting);
   }
 
   //Files is essentially an array of filepaths to be passed, e.g. (['./contracts/meme.sol'])
