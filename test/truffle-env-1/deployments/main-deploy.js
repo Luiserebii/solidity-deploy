@@ -7,12 +7,10 @@ const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
 
 //DEPLOYMENT:
 const Logger = TruffleDeploy.logging.Logger;
-//console.log(TruffleDeploy.logging)
-//console.log("=================", Logger)
 const defaultState = Logger.state.NORMAL;
 
 const compiler = truffleDeploy.createCompiler(defaultState);
-const Deployer = TruffleDeploy.deploy.Deployer;
+const Deployer = TruffleDeploy.deploy.Deployer; //May keep it this way as short-hand
 const flattener = truffleDeploy.createFlattener(defaultState);
 const logutil = new TruffleDeploy.logging.LogUtil();
 
@@ -47,7 +45,8 @@ run();
 
 async function run() {
   //Specify truffleDeploy, the object, as our Object.assign() has taken place in the object; therefore good practice to obtain our "true settings" (although... not completely necessary in this case, I think)
-  const compiled = compiler.compileDirectory(truffleDeploy.config.root);
+  //Perhaps assume we know what we set, anyways
+  const compiled = compiler.compileDirectory(config.root);
   const deployer = await Deployer.build(web3, compiled);
 
   const stage = args['stage'];

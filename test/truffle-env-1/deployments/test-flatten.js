@@ -1,9 +1,8 @@
 const TruffleDeploy = require('truffle-deploy');
 const config = require('./deploy-config');
 const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
-const util = require('util')
 
-const Logger = TruffleDeploy.logging.Logger;
+const Logger = TruffleDeploy.logging.Logger; //Actually... perhaps keep this as shorthand
 run();
 
 
