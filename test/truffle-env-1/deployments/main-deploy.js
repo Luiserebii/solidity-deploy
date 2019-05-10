@@ -3,7 +3,7 @@
 const TruffleDeploy = require('truffle-deploy');
 const config = require('./deploy-config');
 
-const truffleDeploy = new TruffleDeploy(config);
+const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
 
 //DEPLOYMENT:
 const Logger = new TruffleDeploy.logging.Logger();
@@ -44,7 +44,8 @@ run();
 
 
 async function run() {
-  const compiled = config.root ? compiler.compileDirectory(config.root) : compiler.compileDirectory(defaultConfig.root);
+  //Specify truffleDeploy, the object, as our Object.assign() has taken place in the object; therefore good practice to obtain our "true settings" (although... not completely necessary in this case, I think)
+  const compiled = compiler.compileDirectory(truffleDeploy.config.root);
   const deployer = await Deployer.build(web3, compiled);
 
   const stage = args['stage'];

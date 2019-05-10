@@ -45,7 +45,7 @@ class TruffleDeploy {
 }
 
 
-module.exports = {
+exports = {
   TruffleDeploy
 }
 
@@ -73,3 +73,5 @@ exports.styling = {
 exports.verify = {
   EtherscanVerify
 }
+
+console.log(exports)

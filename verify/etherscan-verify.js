@@ -5,18 +5,16 @@
  *  FUTURE: Integrate Logger class.js
  */
 
-const Compiler = require('../compile/compiler');
-const compiler = new Compiler();
-const deployutil = require('../deploy/deploy-util');
-const DeployUtil = new deployutil();
-
-const config = require('../config/deploy-config');
-const defaultConfig = require('../config/default-config');
-
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios'); 
 const util = require('util');
+
+const Compiler = require('../compile/compiler');
+const compiler = new Compiler();
+
+const deployutil = require('../deploy/deploy-util');
+const DeployUtil = new deployutil();
 
 
 /////////////////////////////////////////////////////
@@ -35,6 +33,10 @@ console.log(".sol file location: " + solFile);
 /////////////////////////////////////////////////////
 
 class EtherscanVerify {
+
+  constructor(config={}){
+    this.config = config;
+  }
 
   //Takes the following: (contractObj, addr, solFile);
   async verifyContract(contract, address, filepath) {

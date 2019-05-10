@@ -1,5 +1,8 @@
-const Flattener = require('./compile/flattener.js');
-const Logger = require('./logging/logger.js')
+const TruffleDeploy = require('truffle-deploy');
+const util = require('util')
+console.log(util.inspect(TruffleDeploy));
+const Flattener = TruffleDeploy.compile.Flattener;
+const Logger = TruffleDeploy.logging.Logger;
 
 run();
 
