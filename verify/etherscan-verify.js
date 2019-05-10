@@ -22,6 +22,7 @@ const util = require('util');
 /////////////////////////////////////////////////////
 
 //Verifying contracts:
+/*
 const compiled = config.root ? compiler.compileDirectory(config.root) : compiler.compileDirectory(defaultConfig.root);
 let contractObj = DeployUtil.extractContract(compiled, "Calculator");
 let addr = "0x5E0318D57c2F0d1262df93478A92EeDAd246A374";
@@ -30,7 +31,7 @@ let solFile = path.resolve(config.root, contractObj.solFile);
 console.log("Verifying contract: " + util.inspect(contractObj));
 console.log("Address: " + addr);
 console.log(".sol file location: " + solFile);
-
+*/
 /////////////////////////////////////////////////////
 
 class EtherscanVerify {
@@ -79,8 +80,8 @@ class EtherscanVerify {
 }
 
 ///////////////////////////////////////////////////////////////
-let testverify = new EtherscanVerify();
-testverify.verifyContract(contractObj, addr, solFile);
+//let testverify = new EtherscanVerify();
+//testverify.verifyContract(contractObj, addr, solFile);
 ///////////////////////////////////////////////////////////////
 
 

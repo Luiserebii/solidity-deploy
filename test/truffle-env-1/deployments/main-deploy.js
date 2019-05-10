@@ -1,5 +1,8 @@
 /////////////////////////////////////////////////////
 
+const TruffleDeploy = require('truffle-deploy');
+
+
 //DEPLOYMENT:
 const Logger = require('./logging/logger')
 const defaultState = Logger.state.NORMAL;

@@ -19,7 +19,7 @@ const Deployer = require('./deploy/deployer');
 const DeployUtil = require('./deploy/deploy-util');
 
 const Logger = require('./logging/logger');
-const LogUtil = require('./logging/log-util');
+const LogUtil = require('./logging/util');
 
 const PrettyPrint = require('./styling/pretty-print');
 const EtherscanVerify = require('./verify/etherscan-verify');
