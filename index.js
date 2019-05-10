@@ -1,7 +1,7 @@
 /*
- * ================
- *  truffle-deploy
- * ================
+ * =================
+ *  solidity-deploy
+ * =================
  *
  * MIT License 
  * Copyright (c) 2019 Luiserebii
@@ -25,7 +25,7 @@ const PrettyPrint = require('./styling/pretty-print');
 const EtherscanVerify = require('./verify/etherscan-verify');
 const util = require('util')
 
-class TruffleDeploy {
+class SolidityDeploy {
   
   constructor(config={}) {
     this.config = Object.assign(defaultConfig, config);
@@ -47,7 +47,7 @@ class TruffleDeploy {
 
 
 module.exports = {
-  TruffleDeploy
+  SolidityDeploy
 }
 
 
@@ -75,4 +75,3 @@ module.exports.verify = {
   EtherscanVerify
 }
 
-//console.log(exports)

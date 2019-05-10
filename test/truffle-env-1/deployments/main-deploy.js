@@ -1,18 +1,18 @@
 /////////////////////////////////////////////////////
 
-const TruffleDeploy = require('truffle-deploy');
+const SolidityDeploy = require('solidity-deploy');
 const config = require('./deploy-config');
 
-const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
+const solidityDeploy = new SolidityDeploy.SolidityDeploy(config);
 
 //DEPLOYMENT:
-const Logger = TruffleDeploy.logging.Logger;
+const Logger = SolidityDeploy.logging.Logger;
 const defaultState = Logger.state.NORMAL;
 
-const compiler = truffleDeploy.createCompiler(defaultState);
-const Deployer = TruffleDeploy.deploy.Deployer; //May keep it this way as short-hand
-const flattener = truffleDeploy.createFlattener(defaultState);
-const logutil = new TruffleDeploy.logging.LogUtil();
+const compiler = solidityDeploy.createCompiler(defaultState);
+const Deployer = SolidityDeploy.deploy.Deployer; //May keep it this way as short-hand
+const flattener = solidityDeploy.createFlattener(defaultState);
+const logutil = new SolidityDeploy.logging.LogUtil();
 
 const fs = require('fs');
 const path = require('path');
@@ -44,7 +44,7 @@ run();
 
 
 async function run() {
-  //Specify truffleDeploy, the object, as our Object.assign() has taken place in the object; therefore good practice to obtain our "true settings" (although... not completely necessary in this case, I think)
+  //Specify solidityDeploy, the object, as our Object.assign() has taken place in the object; therefore good practice to obtain our "true settings" (although... not completely necessary in this case, I think)
   //Perhaps assume we know what we set, anyways
   const compiled = compiler.compileDirectory(config.root);
   const deployer = await Deployer.build(web3, compiled);

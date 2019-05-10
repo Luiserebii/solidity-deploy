@@ -1,7 +1,7 @@
 {
   "name": "truffle-env-1",
   "version": "1.0.0",
-  "description": "Test environment for truffle-deploy npm package.",
+  "description": "Test environment for solidity-deploy npm package.",
   "main": "truffle-config.js",
   "directories": {
     "doc": "docs",

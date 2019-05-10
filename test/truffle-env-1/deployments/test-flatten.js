@@ -1,14 +1,14 @@
-const TruffleDeploy = require('truffle-deploy');
+const SolidityDeploy = require('solidity-deploy');
 const config = require('./deploy-config');
-const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
+const solidityDeploy = new SolidityDeploy.SolidityDeploy(config);
 
-const Logger = TruffleDeploy.logging.Logger; //Actually... perhaps keep this as shorthand
+const Logger = SolidityDeploy.logging.Logger; //Actually... perhaps keep this as shorthand
 run();
 
 
 async function run(){
 
-  flattener = truffleDeploy.createFlattener(Logger.state.MASTER);
+  flattener = solidityDeploy.createFlattener(Logger.state.MASTER);
   await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true);
 
 }

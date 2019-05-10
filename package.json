@@ -1,7 +1,7 @@
 {
-  "name": "truffle-deploy",
+  "name": "solidity-deploy",
   "version": "0.0.1",
-  "description": "Truffle deployment scripting package, ideally with automated Etherscan verification built-in!",
+  "description": "Solidity smart contract deployment scripting package, ideally with automated Etherscan verification built-in!",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Luiserebii/truffle-deploy.git"
+    "url": "git+https://github.com/Luiserebii/solidity-deploy.git"
   },
   "author": "Luiserebii",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Luiserebii/truffle-deploy/issues"
+    "url": "https://github.com/Luiserebii/solidity-deploy/issues"
   },
-  "homepage": "https://github.com/Luiserebii/truffle-deploy#readme",
+  "homepage": "https://github.com/Luiserebii/solidity-deploy#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "inquirer": "^6.3.1",
