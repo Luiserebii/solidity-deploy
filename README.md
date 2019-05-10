@@ -15,3 +15,4 @@ The general entry point of this module offers both initialization of a `TruffleD
 
 ## Credits
 * [clemlak](https://github.com/clemlak)
+* <a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a>
