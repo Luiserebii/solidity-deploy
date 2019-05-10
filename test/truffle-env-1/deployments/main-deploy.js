@@ -9,9 +9,9 @@ const truffleDeploy = new TruffleDeploy.TruffleDeploy(config);
 const Logger = new TruffleDeploy.logging.Logger();
 const defaultState = Logger.state.NORMAL;
 
-const compiler = truffleDeploy.createCompiler(undefined, defaultState);
+const compiler = truffleDeploy.createCompiler(defaultState);
 const Deployer = new TruffleDeploy.deploy.Deployer();
-const flattener = truffleDeploy.createFlattener(undefined, defaultState);
+const flattener = truffleDeploy.createFlattener(defaultState);
 const logutil = new TruffleDeploy.logging.LogUtil();
 
 const fs = require('fs');

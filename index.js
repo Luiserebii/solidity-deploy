@@ -35,11 +35,11 @@ class TruffleDeploy {
   }
 
 
-  createCompiler(config=this.config, logSetting=undefined) {
+  createCompiler(logSetting=undefined, config=this.config) {
     return new Compiler(config, logSetting);
   }
   
-  createFlattener(config=this.config, logSetting=undefined) {
+  createFlattener(logSetting=undefined, config=this.config) {
     console.log(config);
     return new Flattener(config, logSetting);
   }

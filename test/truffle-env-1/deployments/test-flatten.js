@@ -9,7 +9,7 @@ run();
 
 async function run(){
 
-  flattener = truffleDeploy.createFlattener(undefined, Logger.state.MASTER);
+  flattener = truffleDeploy.createFlattener(Logger.state.MASTER);
   await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true);
 
 }
