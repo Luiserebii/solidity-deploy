@@ -24,4 +24,6 @@ A mirror of this repository is available at: https://serebii.io:2501/Luiserebii/
 ## Credits
 Thanks to those generous developers who entertained my questions, and helped me understand npm module design better!
 * [clemlak](https://github.com/clemlak)
+* [PlasmaPower](https://github.com/PlasmaPower)
 * <a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a> (as requested)
+* <img src="https://i.imgur.com/sn3RPC0.png"/> (as requested)
