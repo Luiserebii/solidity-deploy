@@ -34,14 +34,24 @@ class SolcUtil {
   }
 
   /**
+   * Recursively looks for files with the .sol extension within the root filepath passed.
    * 
+   * @param {string} root - Root filepath to search within
    * 
-   * 
+   * @return {string[]} results - String array of all filenames ending in ".sol", as absolute filepaths.
    */
   findSolInDir(root) {
     return this.findExtInDir(root, ".sol");
   }
 
+  /**
+   * Recursively looks for files within a given root filepath passed of a particular extension (e.g. .sol).
+   * 
+   * @param {string} root - Root filepath to search within
+   * @param {string} ext - File extension
+   * 
+   * @return {string[]} results - String array of all filenames which satisfied the constraints, as absolute filepaths.
+   */  
   findExtInDir(root, ext) {
     let condition = (filename) => {
       return (filename.slice(ext.length * -1) === ext);
@@ -86,7 +96,13 @@ class SolcUtil {
     return results;
   }
 
-  //Generate input object, assuming Solidity as language, from filepath of sources
+  /**
+   * Generate input object, assuming Solidity as language, from root filepath of sources. This function will search for all .sol files in the root directory, and attach them to the solc input as specified in the solc documentation.
+   *
+   * @param {string} root - Root filepath to search within
+   * @return {JSON} input - solc input including all .sol files found.
+   * 
+   */
   generateSolcInputDirectory(root) {
     const spinner = ora('Generating solc input from directory ' + root).start().clear();
     let input = { language: 'Solidity', sources: {}, settings: { outputSelection: { '*': { '*': [ '*' ] } } } };
@@ -114,7 +130,15 @@ class SolcUtil {
 
   }
 
-  //Generate input object, assuming Solidity as language, from singular contract
+  /**
+   * Generate input object, assuming Solidity as language, a singular .sol file. 
+   *
+   * @param {string} filepath - .sol filepath
+   * @param {string} root - String of the root to utilize in conversion of the solc filename. For more information, see the function "toSolcFilename".
+   *
+   * @return {JSON} input - solc input generated.
+   * 
+   */ 
   generateSolcInputFile(filepath, root) {
     let base = this.toSolcFilename(filepath, root);
     let src = fs.readFileSync(filepath, 'utf8');
