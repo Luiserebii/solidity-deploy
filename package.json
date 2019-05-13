@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha test --recursive",
-    "generate-docs": "rm -rf docs/docdash/* && node_modules/.bin/jsdoc -c docs/jsdoc.json"
+    "generate-docs": "rm -rf docs/* && node_modules/.bin/jsdoc -c meta/jsdoc.json"
   },
   "repository": {
     "type": "git",

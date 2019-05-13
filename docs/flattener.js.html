@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>flattener.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Compiler.html">Compiler</a><ul class='methods'><li data-type='method'><a href="Compiler.html#compile">compile</a></li><li data-type='method'><a href="Compiler.html#compileDirectory">compileDirectory</a></li><li data-type='method'><a href="Compiler.html#compileFile">compileFile</a></li><li data-type='method'><a href="Compiler.html#compileSource">compileSource</a></li></ul></li><li><a href="Flattener.html">Flattener</a><ul class='methods'><li data-type='method'><a href="Flattener.html#flatten">flatten</a></li><li data-type='method'><a href="Flattener.html#flattenAndCompile">flattenAndCompile</a></li></ul></li><li><a href="SolcUtil.html">SolcUtil</a><ul class='methods'><li data-type='method'><a href="SolcUtil.html#findExtInDir">findExtInDir</a></li><li data-type='method'><a href="SolcUtil.html#findFilesInDir">findFilesInDir</a></li><li data-type='method'><a href="SolcUtil.html#findSolInDir">findSolInDir</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInput">generateSolcInput</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputDirectory">generateSolcInputDirectory</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputFile">generateSolcInputFile</a></li><li data-type='method'><a href="SolcUtil.html#toSolcFilename">toSolcFilename</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">flattener.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const truffleFlattener = require('truffle-flattener');
+const Compiler = require('./compiler');
+const Logger = require('../logging/logger');
+const fs = require('fs');
+const path = require('path');
+const ora = require('ora');
+
+/** Flattener class. Abstracts flattener functionality for the use of the user, as well as general code modularity. */
+class Flattener {
+
+  /**
+   * Initializes a Flattener instance.
+   *
+   * @param {object} options - Options object.
+   * @param {Logger.state.ENUM) logSetting - Log setting to use with all class functions.
+   */
+  constructor(options, logSetting = Logger.state.NORMAL) {
+    this.options = options;
+    this.log = new Logger(logSetting);
+    this.compiler = new Compiler(options, logSetting);
+  }
+
+  /**
+   * ASYNC - Flattens all files passed, and optionally writes to file. Generic function in order to work with various kinds of flatteners (truffle-flattener is currently the only one used, but will very likely introduce more options for users in the near future)
+   *
+   * @param {string[]} files - Files to flatten; an array of filepaths to be passed, e.g. (['./contracts/meme.sol'])
+(note; this should usually only be one in most instances; this piece of the API may change soon)
+   * @param {string} filepath - Filepath to write flattened contract to.
+   * @param {boolean} [writeToFile=false]
+   * 
+   * @return {string} flattened - Flattened contract.
+   * [NOTE FOR DEV]: Seems to be a conflict in using this.options to determine write location, or even whether to write at all; return to this later, commenting out "const dir" line.
+   */
+  async flatten(files = [], filepath = null, writeToFile = false) {
+    const spinner = ora('Flattening .sol file ' + filepath + '...').start();
+    const flattened = await truffleFlattener(files);
+    if(writeToFile){
+      //const dir = this.options.flatten.writeLocation;
+      fs.writeFileSync(filepath, flattened);
+      spinner.succeed();
+      this.log.print(Logger.state.NORMAL, "Flattened file \"" + filepath + "\" written!");
+    } else {
+      spinner.fail();
+    }
+    return flattened;
+  }
+
+
+  /**
+   * ASYNC - Flattens the contract at the specified filepath, and compiles the flattened output, returning the compiler.compileSource() output.
+   * 
+   * @param {string} filepath - Filepath of the single contract to flatten and compile.
+   * @param {boolean} [writeToFile=false]
+   * 
+   * @return {object} compiled - See Compiler class for what the output of this may look like.
+   */
+  async flattenAndCompile(filepath, writeToFile = false) {
+    const root = this.options.root;
+
+    const base = path.basename(filepath);
+    //TODO: Throw error if not an array
+    const src = writeToFile ? await this.flatten([filepath], path.resolve(this.options.flatten.writeLocation, base), true) : await this.flatten([filepath]);
+
+    const compiled = this.compiler.compileSource(base, src);
+    return compiled;
+  }
+
+
+}
+
+module.exports = Flattener;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Mon May 13 2019 01:14:32 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
