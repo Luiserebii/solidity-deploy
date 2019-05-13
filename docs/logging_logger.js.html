@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>logging/logger.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Compiler.html">Compiler</a><ul class='methods'><li data-type='method'><a href="Compiler.html#compile">compile</a></li><li data-type='method'><a href="Compiler.html#compileDirectory">compileDirectory</a></li><li data-type='method'><a href="Compiler.html#compileFile">compileFile</a></li><li data-type='method'><a href="Compiler.html#compileSource">compileSource</a></li></ul></li><li><a href="Deployer.html">Deployer</a><ul class='methods'><li data-type='method'><a href="Deployer.html#.build">build</a></li><li data-type='method'><a href="Deployer.html#deploy">deploy</a></li><li data-type='method'><a href="Deployer.html#deployContract">deployContract</a></li></ul></li><li><a href="DeployUtil.html">DeployUtil</a><ul class='methods'><li data-type='method'><a href="DeployUtil.html#extractContract">extractContract</a></li></ul></li><li><a href="EtherscanVerify.html">EtherscanVerify</a><ul class='methods'><li data-type='method'><a href="EtherscanVerify.html#verifyContract">verifyContract</a></li></ul></li><li><a href="Flattener.html">Flattener</a><ul class='methods'><li data-type='method'><a href="Flattener.html#flatten">flatten</a></li><li data-type='method'><a href="Flattener.html#flattenAndCompile">flattenAndCompile</a></li></ul></li><li><a href="Logger.html">Logger</a><ul class='methods'><li data-type='method'><a href="Logger.html#endl">endl</a></li><li data-type='method'><a href="Logger.html#print">print</a></li><li data-type='method'><a href="Logger.html#pureprint">pureprint</a></li><li data-type='method'><a href="Logger.html#pureprintMulti">pureprintMulti</a></li><li data-type='method'><a href="Logger.html#validate">validate</a></li></ul></li><li><a href="LogUtil.html">LogUtil</a><ul class='methods'><li data-type='method'><a href="LogUtil.html#promptExistence">promptExistence</a></li></ul></li><li><a href="PrettyPrint.html">PrettyPrint</a><ul class='methods'><li data-type='method'><a href="PrettyPrint.html#arrow">arrow</a></li><li data-type='method'><a href="PrettyPrint.html#headline">headline</a></li><li data-type='method'><a href="PrettyPrint.html#mainheadline">mainheadline</a></li><li data-type='method'><a href="PrettyPrint.html#miniheadline">miniheadline</a></li></ul></li><li><a href="SolcUtil.html">SolcUtil</a><ul class='methods'><li data-type='method'><a href="SolcUtil.html#findExtInDir">findExtInDir</a></li><li data-type='method'><a href="SolcUtil.html#findFilesInDir">findFilesInDir</a></li><li data-type='method'><a href="SolcUtil.html#findSolInDir">findSolInDir</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInput">generateSolcInput</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputDirectory">generateSolcInputDirectory</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputFile">generateSolcInputFile</a></li><li data-type='method'><a href="SolcUtil.html#toSolcFilename">toSolcFilename</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">logging/logger.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*=============
+ *  Logger.js
+ *=============
+ *
+ * Basic logger class that allows for selectively printing certain messages
+ * to the console, depending on the level of desired verbosity.
+ * 
+ * The states, in order of verbosity, are:
+ *   NONE, NORMAL, SUPER, MASTER
+ * (MIN, as in minimal [potentialy between NONE and MIN])
+ *
+ *
+ * Inspiration for this class:  
+ *   // An interesting solution to the spamming of if(verbose) might be to create a
+ *   // seperate class containing the whole verbose logic, initialize it by passing
+ *   // in the verbose variable (which would be a bool (I don't think enum is possible))
+ *   //                    NOTE: enum may be possible; simply have different functions
+ *   //                    which highlight what kind of printing it is, such as
+ *   //                    printSuper(msg) which would only display if internal enum
+ *   //                    allows it 
+ *   // and running a function, like
+ *   // "print(msg)" which would handle the logic internally based on the value passed
+ *   // on initialization
+ *
+ */
+
+
+/**
+ * Basic logger class that allows for selectively printing certain messages
+ * to the console, depending on the level of desired verbosity.
+ * 
+ * The states, in order of verbosity, are:
+ *   NONE, NORMAL, SUPER, MASTER
+ * (MIN, as in minimal [potentialy between NONE and MIN])
+ *
+ * Meant to be held as an object by classes to hold state of logging, and process logic, such as deciding whether or not to print/log something or not. All a utilizing class would need to do would be to hold a Logger object, and call .print(), allowing the rest to do its job.
+ *
+ */
+class Logger {
+
+  //const state = {} enum equivalent
+  /**
+   * Logger.state.ENUM - "NONE": 0, "MIN": 1, "NORMAL": 2, "SUPER": 3, "MASTER": 4
+   */
+  static get state() {
+    return {
+      NONE: 0,
+      MIN: 1, 
+      NORMAL: 2,
+      SUPER: 3,
+      MASTER: 4
+    }
+  };
+  
+  /**
+   * Initialize a Logger object.
+   * @param {Logger.state.ENUM} _setting - Internal state which the logger is set at. 
+   */
+  constructor(_setting = Logger.state.NORMAL) {
+    this.setting = _setting;
+  }
+
+  //Print "Normal", as in "verbose"
+  printNormal(msg) {
+    if(validate(Logger.state.NORMAL)) this.print(msg);
+  }
+
+  //Print "Normal", as in "verbose"
+  printMinimal(msg) {
+    if(validate(Logger.state.MIN)) this.print(msg);
+  }
+
+  //Print "Super", as in "super-verbose"
+  printSuper(msg) {
+    if(validate(Logger.state.SUPER)) this.print(msg);
+  }
+
+  //Print "Master", as in absolutely-verbose
+  printMaster(msg) {
+    if(validate(Logger.state.MASTER)) this.print(msg);
+  }
+ 
+
+  
+  /**
+   * Function defining print functionality itself.
+   *
+   * 
+   * @param {*|Logger.state.ENUM} arg1 - IF only one argument has been passed, it is assumed that this is something to be printed. In every other case, this argument is a Logger.state.ENUM which represents which "level" of logging the statement is appropriate for (i.e., print(Logger.state.MASTER, mnemonic))
+   * @param {...*} arg2 - Print every additional argument, for syntactic sugar.
+   * @return {boolean} success
+   */
+  print(arg1, arg2) {
+
+    if(arguments.length === 1) {
+
+      this.pureprint(arg1)
+
+    } else if(this.validate(arg1)){
+
+      if(arguments.length === 2){
+        this.pureprint(arg2)
+      } else {
+        this.pureprintMulti(...Array.from(arguments).slice(1)) 
+      }
+     
+    }
+    return true;
+  }
+
+  /**
+   * Prints multiple arguments, iterating over them one at a time.
+   * 
+   * @return {boolean} success
+   */
+  pureprintMulti() {
+    for(let i = 0; i &lt; arguments.length; i++) {
+      this.pureprint(arguments[i]);
+    }
+    return true;
+  }
+
+  /**
+   * Pure print function. Defines the absolute base functionality for printing. Essentially just an alias for console.log() at the moment.
+   * @param {*} msg - Prints argument to the console.
+   */
+  pureprint(msg) {
+    console.log(msg);
+  }
+
+  /**
+   * Simply a convenient alias for "\n".
+   */
+  endl() {
+    console.log("\n");
+  }
+
+  /**
+   * A simple function which determines whether or not the passed state "passes", taking the Logger's state value into account. If the state is lower than or the same as the current Logger state (where higher would mean "more verbose/permissive") then true is returned, otherwise, false.
+   * @return {boolean} valid
+   */
+  //Minor, but this could be renamed to "isValid"
+  validate(state) {
+    return state &lt;= this.setting; //Return true if the state is within constraints, else false
+  }
+ 
+}
+
+module.exports = Logger;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Mon May 13 2019 04:13:45 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
