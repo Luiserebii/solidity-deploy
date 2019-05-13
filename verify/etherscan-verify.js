@@ -32,12 +32,31 @@ console.log(".sol file location: " + solFile);
 */
 /////////////////////////////////////////////////////
 
+/**
+ *  A class to verify contracts on Etherscan. 
+ *
+ *  INCOMPLETE CLASS: SIMPLY TESTING FOR PROOF OF WORKING ATM
+ *  Lacks refactoring, better use of config, etc. etc.  
+ *
+ *  FUTURE: Integrate Logger class.js
+ */
 class EtherscanVerify {
 
+  /**
+   * Create an instance of EtherscanVerify.
+   * @param {object} config - Configuration object.
+   */
   constructor(config={}){
     this.config = config;
   }
 
+  /**
+   * Verifies a contract on Etherscan, as designated by the configuration passed to the object (i.e., API key, Etherscan URL, are all set there)
+   *
+   * @param {object} contract - Internal contract object, as defined in DeployUtil.extractContract
+   * @param {string} address - Contract address at which it was deployed
+   * @param {string} filepath - Filepath of the .sol file to verify.
+   */
   //Takes the following: (contractObj, addr, solFile);
   async verifyContract(contract, address, filepath) {
     let data = {
