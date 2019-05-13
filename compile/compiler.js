@@ -15,7 +15,7 @@ class Compiler {
   /** 
    * Initialize a Compiler object.
    * @param {object} options - User options
-   * @param {Logger.state ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
    */  
   constructor(options, logSetting = Logger.state.NORMAL) {
     this.options = options;
