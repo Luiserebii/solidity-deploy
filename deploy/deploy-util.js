@@ -1,14 +1,35 @@
 
 const Logger = require('../logging/logger');
 
+/** Utility class for Deployer. */
 class DeployUtil {
 
+  /**
+   * Initialize an instance of DeployUtil.
+   * @param {Logger.state.ENUM} logSetting - Log setting for DeployUtil's functions
+   *
+   */
   constructor(logSetting = Logger.state.NORMAL) {
     this.log = new Logger(logSetting);
   }
 
-  //Function which takes solc compiled output, a contract name to extract, and returns a convenience object
-  //  this returned object contains name, abi, bytecode, and the raw solc output
+  /**
+   * Function which takes solc compiled output, a contract name to extract, and returns a convenience object.
+   * This returned object contains name, abi, bytecode, the raw solc output, and other properties conveniently mapped to pieces of the raw JSON.
+   *
+   * @param {JSON} output - solc compiled output. 
+   * @param {string} name - Name of the contract (e.g. MemeToken) 
+   *
+   * @return {object} contract - An internally defined contract object., with the following properties: 
+   * "name" {string} - Name of contract
+   * "abi" {JSON} - Contract ABI
+   * "bytecode" {string} - Bytecode
+   * "metadata" {object} - Metadata (contains metadata on compilation)
+   * "compilerVersion" {string} - Compiler version used in compilation
+   * "optimizer" {JSON} - JSON Object with both number of runs, and whether enabled or not
+   * "raw" {JSON} - Holds the raw compilation output of the contract
+   * "solFile": Name of the .sol file the contract was compiled in.
+   */
   extractContract(output, name){
 
     //Find all raw contract output
