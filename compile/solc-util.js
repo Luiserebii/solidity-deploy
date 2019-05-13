@@ -145,7 +145,15 @@ class SolcUtil {
     return this.generateSolcInputSinglePure(base, src);  
   }
 
-  //Generate input object, assuming Solidity as language, from singular contract
+  /**
+   * Generate input object, assuming Solidity as language, a raw contract source file (singular contract) as a string.
+   *
+   * @param {string} base - "base" is the "solc filename" we use in generating the solcInput; needs a better name, essentially think of it as the output of toSolcFilename() (function above).
+   * @param {string} src - Raw Solidity source code.
+   *
+   * @return {JSON} input - solc input generated.
+   * 
+   */  
   //base simply for compiling (e.g. Meme.sol) (make this automatic in the future)
   generateSolcInput(base, src) {
     
