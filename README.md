@@ -18,6 +18,9 @@ Verification is still very buggy, needs success cases of verification via [Ether
 
 The general entry point of this module offers both initialization of a `SolidityDeploy` object, or access to any of the other classes directly. The advantage of using a `SolidityDeploy` object is avoiding repetition in passing options/config; the object supplies functions with the `create` prefix which handles this minimized 
 
+## Documentation
+Documentation is currently hosted on GitHub Pages at: https://luiserebii.github.io/solidity-deploy/
+
 ## Mirror
 A mirror of this repository is available at: https://serebii.io:2501/Luiserebii/solidity-deploy
 
