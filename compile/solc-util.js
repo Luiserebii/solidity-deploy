@@ -5,12 +5,25 @@ const ora = require('ora');
 
 const Logger = require('../logging/logger');
 
+/** Utility class to hold solc-related operations. */
 class SolcUtil {
 
+  /**
+   * Initialize a SolcUtil instance.
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum.
+   */
   constructor(logSetting = Logger.state.NORMAL) {
     this.log = new Logger(logSetting);
   }
 
+  /**
+   * Converts an absolute regular .sol filepath into one to be input to the compiler. 
+   * Essentially returns a kind of "relative filepath" removing the root from the .sol filepath passed.
+   * 
+   * @param {string} filepath - String of the filepath to convert to a solc filename. (e.g. "/home/luiserebii/github/solidity-math/Calculator.sol")
+   * @param {string} root - String of the root to utilize in conversion of the solc filename.
+   * @return {string} solcFilename
+   */
   //This needs to be improved by using some sort of "node.js path equivalent"
   toSolcFilename(filepath, root) {
     let index = filepath.indexOf(root);
@@ -20,6 +33,11 @@ class SolcUtil {
     return filepath.substring(index + root.length + 1);
   }
 
+  /**
+   * 
+   * 
+   * 
+   */
   findSolInDir(root) {
     return this.findExtInDir(root, ".sol");
   }
@@ -32,10 +50,18 @@ class SolcUtil {
   }
 
 
-  //Takes a root filepath, and a condition function
-  //Condition function is expected to take a filename and return a bool; i.e., something like:
-  // public bool isSol(filename){} (pseudo-code syntax)
-
+  /**
+   * Recursively looks for files within a given root filepath passed, using the "condition" function passed in to determine whether to include it in the results.
+   * 
+   * @param {string} root - Root filepath to search within
+   * @param {Function} condition - A function whose return value dictates whether or not a file is included in the results. The general format of the input function is: 
+   *
+   * function(filename){ return isValid; }
+   * or
+   * (filename) => return isValid;
+   * 
+   * @return {string[]} results - String array of all filenames which satisfied the constraints, as absolute filepaths.
+   */
   findFilesInDir(root, condition){
     var results = [];
 
