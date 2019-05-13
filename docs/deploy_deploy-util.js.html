@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>deploy/deploy-util.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,60 +31,94 @@
 
 <div id="main">
     
+    <h1 class="page-title">deploy/deploy-util.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+const Logger = require('../logging/logger');
+
+/** Utility class for Deployer. */
+class DeployUtil {
+
+  /**
+   * Initialize an instance of DeployUtil.
+   * @param {Logger.state.ENUM} logSetting - Log setting for DeployUtil's functions
+   *
+   */
+  constructor(logSetting = Logger.state.NORMAL) {
+    this.log = new Logger(logSetting);
+  }
+
+  /**
+   * Function which takes solc compiled output, a contract name to extract, and returns a convenience object.
+   * This returned object contains name, abi, bytecode, the raw solc output, and other properties conveniently mapped to pieces of the raw JSON.
+   *
+   * @param {JSON} output - solc compiled output. 
+   * @param {string} name - Name of the contract (e.g. MemeToken) 
+   *
+   * @return {object} contract - An internally defined contract object., with the following properties: 
+   * "name" {string} - Name of contract
+   * "abi" {JSON} - Contract ABI
+   * "bytecode" {string} - Bytecode
+   * "metadata" {object} - Metadata (contains metadata on compilation)
+   * "compilerVersion" {string} - Compiler version used in compilation
+   * "optimizer" {JSON} - JSON Object with both number of runs, and whether enabled or not
+   * "raw" {JSON} - Holds the raw compilation output of the contract
+   * "solFile": Name of the .sol file the contract was compiled in.
+   */
+  extractContract(output, name){
+
+    //Find all raw contract output
+    let raw;
+    let isFound = false;
+    //Let's just hang onto the reference of the filename as well...
+    let sol;
+    for(let solFile in output.contracts) {
+      this.log.print(Logger.state.SUPER, "Looking over " + solFile + "...");
+      for(let c in output.contracts[solFile]) {
+        console.log("    " + c);
+        if(c === name) { 
+          raw = output.contracts[solFile][c];
+          sol = solFile;
+          isFound = true;
+          this.log.print(Logger.state.SUPER, "Found contract!!!");
+        }
+      }
+    }
+    //If we failed to find any contract, throw:
+    if(!isFound) throw "Contract \"" + name + "\" not found within compiled output.";
+    
+    const contract = {
+      "name": name,
+      get abi() { return this.raw.abi; },
+      get bytecode() { return this.raw.evm.bytecode.object; },
+      get metadata() { return JSON.parse(this.raw.metadata); }, //the metadata object is just a string, so let's parse for convenience...
+      get compilerVersion() { return this.metadata.compiler.version; },
+      get optimizer() { return this.metadata.settings.optimizer; },
+      "raw": raw,
+      "solFile": sol
+    }
+
+    return contract;
+  }
 
 
-    <section class="package">
-        <h3> </h3>		
+
+}
+
+
+
+module.exports = DeployUtil;
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>solidity-deploy</h1>
-<p><a href="https://badge.fury.io/js/solidity-deploy"><img src="https://badge.fury.io/js/solidity-deploy.svg" alt="npm version"></a></p>
-<p>solidity-deploy is an npm module which allows someone to create custom contract deployment scripts, including an abstracted compiler and flattener. Ideally, it also allows for smart contracts to be verified on Etherscan smoothly (still buggy).</p>
-<img src="https://i.imgur.com/BYwVqNx.gif"/>
-<p>Sample run of a script using solidity-deploy. <a href="https://www.youtube.com/watch?v=ZpFRX0Rv5_E">Full video</a></p>
-<h2>Description</h2>
-<p>Currently structured as a node module, with tests passing; however, there are a number of changes this project will go through, including but not limited to:</p>
-<ul>
-<li>Addition of proper Mocha tests (tests at this point are limited to a .sh script and mini-node script which runs deployments and flattening, respectively.)</li>
-<li>API documentation</li>
-</ul>
-<p>At the moment, the module is currently reliant on <a href="https://www.npmjs.com/package/truffle-flattener">truffle-flattener</a> for flattening; however, in the future, this will be phased out for a more general flattener, or at least give the user some choice on which flattener to use.</p>
-<p>Verification is still very buggy, needs success cases of verification via <a href="https://rinkeby.etherscan.io/apis#contracts">Etherscan's Contract API</a>. The class holding Etherscan verification (verify/etherscan-verify.js) may not be up to date with a few things on the rest of repository (may work in a vacuum, but not optimized for the module as a whole)</p>
-<p>The general entry point of this module offers both initialization of a <code>SolidityDeploy</code> object, or access to any of the other classes directly. The advantage of using a <code>SolidityDeploy</code> object is avoiding repetition in passing options/config; the object supplies functions with the <code>create</code> prefix which handles this minimized</p>
-<h2>Documentation</h2>
-<p>Documentation is currently hosted on GitHub Pages at: https://luiserebii.github.io/solidity-deploy/</p>
-<h2>Mirror</h2>
-<p>A mirror of this repository is available at: https://serebii.io:2501/Luiserebii/solidity-deploy</p>
-<h2>Credits</h2>
-<p>Thanks to those generous developers who entertained my questions, and helped me understand npm module design better!</p>
-<ul>
-<li><a href="https://github.com/clemlak">clemlak</a></li>
-<li><a href="https://github.com/PlasmaPower">PlasmaPower</a></li>
-<li><a href="https://github.com/d1ll0n"><img src="https://i.imgur.com/5xXlQDX.png"/></a> (as requested)</li>
-<li><img src="https://i.imgur.com/sn3RPC0.png"/> (as requested)</li>
-</ul></article>
-    </section>
-
-
 
 
 

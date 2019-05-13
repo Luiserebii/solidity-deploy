@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>deploy/deployer.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Compiler.html">Compiler</a><ul class='methods'><li data-type='method'><a href="Compiler.html#compile">compile</a></li><li data-type='method'><a href="Compiler.html#compileDirectory">compileDirectory</a></li><li data-type='method'><a href="Compiler.html#compileFile">compileFile</a></li><li data-type='method'><a href="Compiler.html#compileSource">compileSource</a></li></ul></li><li><a href="Deployer.html">Deployer</a><ul class='methods'><li data-type='method'><a href="Deployer.html#.build">build</a></li><li data-type='method'><a href="Deployer.html#deploy">deploy</a></li><li data-type='method'><a href="Deployer.html#deployContract">deployContract</a></li></ul></li><li><a href="DeployUtil.html">DeployUtil</a><ul class='methods'><li data-type='method'><a href="DeployUtil.html#extractContract">extractContract</a></li></ul></li><li><a href="Flattener.html">Flattener</a><ul class='methods'><li data-type='method'><a href="Flattener.html#flatten">flatten</a></li><li data-type='method'><a href="Flattener.html#flattenAndCompile">flattenAndCompile</a></li></ul></li><li><a href="SolcUtil.html">SolcUtil</a><ul class='methods'><li data-type='method'><a href="SolcUtil.html#findExtInDir">findExtInDir</a></li><li data-type='method'><a href="SolcUtil.html#findFilesInDir">findFilesInDir</a></li><li data-type='method'><a href="SolcUtil.html#findSolInDir">findSolInDir</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInput">generateSolcInput</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputDirectory">generateSolcInputDirectory</a></li><li data-type='method'><a href="SolcUtil.html#generateSolcInputFile">generateSolcInputFile</a></li><li data-type='method'><a href="SolcUtil.html#toSolcFilename">toSolcFilename</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">deploy/deployer.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const deployutil = require('./deploy-util')
+const DeployUtil = new deployutil();
+const PrettyPrint = require('../styling/pretty-print');
+const pp = new PrettyPrint();
+const Logger = require('../logging/logger');
+const ora = require('ora');
+
+/** Deployer class. Handles all functionality with using web3 and compiled material to deploy! */
+class Deployer {
+
+  /**
+   * Instantiate a Deployer object.
+   * 
+   * &lt;b>NOTE: This is not inteded to be called by the user; if you are looking to create a Deployer from web3, please use "static async build" instead!&lt;/b>
+   *
+   * @param {web3_instance} _web3 - Initizalized web3 instance, with provider set
+   * @param {object} [_compiled=null] - solc compilation output
+   * @param {string[]} [_accounts=null] - Array of accounts
+   * @param {Logger.state.ENUM} [_logSetting=Logger.state.NORMAL] - Logger state for deployer to use when running methods.
+   */
+  //_compiled as an optional param, a way to sort of... hmmm, should be property?
+  //NOTE: THIS IS NOT INTENDED TO BE CALLED; ONLY FOR PRIVATE USE. PLEASE USE BUILD INSTEAD!!!
+  constructor(_web3, _compiled = null, _accounts = null, _logSetting = Logger.state.NORMAL) {
+    this.web3 = _web3;
+    this.accounts = _accounts;
+    this.compiled = _compiled;
+    this.log = new Logger(_logSetting);
+  }
+
+  /**
+   * Construct a Deployer object. &lt;b>The intended point of entry.&lt;/b>
+   *
+   * @param {web3_instance} _web3 - Initizalized web3 instance, with provider set
+   * @param {JSON} [_compiled=null] - solc compilation output. Required for using `async deploy()` function!
+   * @param {Logger.state.ENUM} [_logSetting=Logger.state.NORMAL] - Logger state f
+or deployer to use when running methods. 
+   *
+   * @return {Deployer} deployer - a new Deployer object instantiated using the provided parameters.
+   */
+  static async build(_web3, _compiled = null, _logSetting = Logger.state.NORMAL) {    
+    let accounts = await _web3.eth.getAccounts();  
+    return new Deployer(_web3, _compiled, accounts, _logSetting);
+  }
+
+  /**
+   * Deploy a contract by name, by parsing the object's (if not provided) compiled material. Returns the contract deployed as a web3.eth.Contract object (as provided by web3).
+   * 
+   * @param {string} name - Name of the contract (e.g. Calculator.sol, ERC20.sol)
+   * @param {array} [args=[]] - Constructor arguments for the contract
+   * @param {object} [sender={ from: this.accounts[0] }] - The send object to be passed along in deployment. By default, it is passed an object declaring the 1st account as the sender.
+   * @param {JSON} [compiled=this.compiled] - solc compilation output.
+   *
+   * @return {web3.eth.Contract} - Contract web3 object of the deployed contract.
+   */
+  async deploy(name, args = [], sender = { from: this.accounts[0] }, compiled=this.compiled){
+    if(!compiled) { throw "No compilation material provided to deployer!"; }
+    this.log.print(Logger.state.SUPER, "Accounts:   " + this.accounts + "\n");
+    const contractInput = DeployUtil.extractContract(compiled, name);
+    this.log.print(Logger.state.MASTER, contractInput);
+
+    let Contract = await this.deployContract(contractInput, args, sender);
+    return Contract;
+  }
+
+  /**
+   * Deploy a contract object [defined internally; see return val of DeployUtil.extractContract].
+   * 
+   * @param {object} contract - Contract object [constructed internally, NOT web3]
+   * @param {array} args - Constructor arguments for the contract
+   * @param {object} sendOptions - The send object to be passed along in deployment. 
+   * 
+   * @return {web3.eth.Contract} - Contract web3 object of the deployed contract.
+   */
+  async deployContract(contract, args, sendOptions){
+
+    console.log(pp.miniheadline("Deploying " + contract.name + '...'));
+    const spinner = ora().start(); 
+    spinner.clear();
+    let spinnerConf;
+    let contractWeb3 = await (new this.web3.eth.Contract(contract.abi)
+        .deploy({ "data": contract.bytecode.indexOf('0x') === 0 ? contract.bytecode : '0x' + contract.bytecode, "arguments": args })
+        .send(sendOptions)
+        .on('receipt', (receipt) => {
+          spinner.succeed();
+          console.log(pp.arrow("status: " + receipt.status ? "Success!" : "Failed :("));
+          console.log(pp.arrow("transaction hash: " + receipt.transactionHash));
+          console.log(pp.arrow("contract address: " + receipt.contractAddress));
+          console.log(pp.arrow("from: " + receipt.from));
+          console.log(pp.arrow("block number: " + receipt.blockNumber));
+          console.log(pp.arrow("gas used: " + receipt.gasUsed));
+          console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+          spinnerConf = ora().start()
+          spinnerConf.clear();
+
+        })
+        .on('confirmation', (num, receipt) => {
+          console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
+          if(num === 2) {
+            spinnerConf.succeed();
+            console.log("...");
+            console.log("Confirmed!");
+
+            process.exit(0);
+            console.log("\n\nExtra confirmations:\n")
+            //resolve();
+
+          }
+        })
+        .on('error', (err) => { console.log(err); spinner.fail(); }));
+    return contractWeb3;
+  }
+
+
+}
+
+
+
+//Deployment logic:
+
+//Takes a Contract object, parameters, and an optional object to pass to send
+//contract, args = [], sendobj = {}
+//
+//NumberContract = await new web3.eth.Contract(JSON.parse(contract.interface))
+//    .deploy({data: '0x' + contract.bytecode, args: []})
+//    .send(sendobj)
+
+//deploy function, takes a contract object (name, interface, bytecode)
+//  Print intro headline
+//   Deploy, await receipt
+//  Print receipt info
+//  Listen for confirmations (likely through .then())
+//   follow up
+//   etc., etc.
+
+
+//Print functions (returns a string, which is then printed):
+//
+// for "> "
+// for headlines (adding ==== below as well)
+// for mini-headlines (adding ---- below as well)
+
+/*
+Print: "Starting deployment..." 
+Print: as many '=' chars as above line
+
+Print: "Addresses:"
+Print array of addresses
+
+
+//For each contract:
+Print: "Deploying 'CONTRACTNAME'"
+Print: as many '-' chars as above line
+
+Print:
+"> transaction hash: "   
+"> contract address: "
+"> account: "
+"> balance: "
+//Other details...
+
+Print: "Pausing for 2 confirmations..."
+Print: as many '-' as above line
+"> confirmation number: [NUMBER] (block: [BLOCKNUMBER])"
+
+Print: "Summary"
+Print: as many '=' chars as above line
+"> Total deployments: [NUMBER]"
+*/
+
+
+
+
+
+module.exports = Deployer;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Mon May 13 2019 03:30:23 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
