@@ -1,5 +1,6 @@
 
 const Logger = require('../logging/logger');
+const Contract = require('./contract');
 
 /** Utility class for Deployer. */
 class DeployUtil {
@@ -52,7 +53,7 @@ class DeployUtil {
     //If we failed to find any contract, throw:
     if(!isFound) throw "Contract \"" + name + "\" not found within compiled output.";
     
-    const contract = {
+/*    const contract = {
       "name": name,
       get abi() { return this.raw.abi; },
       get bytecode() { return this.raw.evm.bytecode.object; },
@@ -62,7 +63,8 @@ class DeployUtil {
       "raw": raw,
       "solFile": sol
     }
-
+*/
+    const contract = new Contract(name, abi, sol);
     return contract;
   }
 
