@@ -96,7 +96,7 @@ or deployer to use when running methods.
         .on('confirmation', (num, receipt) => {
           console.log("confirmation number: " + num + " (block: " + receipt.blockNumber + ")");
           if(num === 2) {
-            spinnerConf.succeed();
+            if(spinnerConf) spinnerConf.succeed();
             console.log("...");
             console.log("Confirmed!");
 
