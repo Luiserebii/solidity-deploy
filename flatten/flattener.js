@@ -1,5 +1,5 @@
 const truffleFlattener = require('truffle-flattener');
-const Compiler = require('./compiler');
+const Compiler = require('../compile/compiler');
 const Logger = require('../logging/logger');
 const fs = require('fs');
 const path = require('path');

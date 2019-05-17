@@ -34,6 +34,7 @@
     "chai": "^4.2.0",
     "docdash": "^1.1.0",
     "jsdoc": "~3.6.2",
+    "jsdoc-to-markdown": "^5.0.0",
     "mocha": "^6.1.4"
   }
 }

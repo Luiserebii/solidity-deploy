@@ -12,7 +12,7 @@
 const defaultConfig = require('./config/default-config');
 
 const Compiler = require('./compile/compiler');
-const Flattener = require('./compile/flattener');
+const Flattener = require('./flatten/flattener');
 const SolcUtil = require('./compile/solc-util');
 
 const Deployer = require('./deploy/deployer');
@@ -53,13 +53,16 @@ module.exports = {
 
 module.exports.compile = {
   Compiler,
-  Flattener,
   SolcUtil
 }
 
 module.exports.deploy = {
   Deployer,
   DeployUtil
+}
+
+module.exports.flatten = {
+  Flattener
 }
 
 module.exports.logging = {
