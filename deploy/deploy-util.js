@@ -64,7 +64,7 @@ class DeployUtil {
       "solFile": sol
     }
 */
-    const contract = new Contract(name, abi, sol);
+    const contract = new Contract(name, raw, sol);
     return contract;
   }
 
