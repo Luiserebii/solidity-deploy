@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "truffle-hdwallet-provider": "^1.0.7",
-    "web3": "^1.0.0-beta.36"
+    "web3": "1.0.0-beta.36"
   },
   "devDependencies": {
     "mocha": "^6.1.4"
