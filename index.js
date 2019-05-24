@@ -40,7 +40,9 @@ class SolidityDeploy {
     return new Flattener(config, logSetting);
   }
   
-  
+  async createDeployer(web3, compiled, logSetting=undefined, config=this.config) {
+    return await Deployer.build(web3, compiled, logSetting, config);
+  }  
   
   
 }

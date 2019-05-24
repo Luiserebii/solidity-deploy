@@ -5,6 +5,10 @@ const defaultConfig = {
   flatten: {
     writeLocation: path.resolve('../flattened')
   }
+
+  deployment: {
+    confirmations: 2
+  }
 };
 
 module.exports = defaultConfig;
