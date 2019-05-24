@@ -26,20 +26,45 @@ const EtherscanVerify = require('./verify/etherscan-verify');
 const util = require('util')
 
 class SolidityDeploy {
-  
+
+  /**
+   * Initialize a SolidityDeploy object. Main point of entry for config-based needs. In other words, if you are looking to use an object listed here with particular configuration, please initialize this and call the appropriate method.
+   *
+   * @param {object} options - User options, which will overwrite any default ones.
+   *
+   */
   constructor(config={}) {
     this.config = Object.assign(defaultConfig, config);
   }
 
-
+  /**
+   * Create a Compiler object.
+   *
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */
   createCompiler(logSetting=undefined, config=this.config) {
     return new Compiler(config, logSetting);
   }
-  
+
+  /**
+   * Create a Flattener object.
+   *
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */  
   createFlattener(logSetting=undefined, config=this.config) {
     return new Flattener(config, logSetting);
   }
-  
+ 
+  /**
+   * Create a Deployer object.
+   *
+   * @param {web3_instance} _web3 - Initizalized web3 instance, with provider set
+   * @param {JSON} [_compiled=null] - solc compilation output. Required for using `async deploy()` function!
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */    
   async createDeployer(web3, compiled, logSetting=undefined, config=this.config) {
     return await Deployer.build(web3, compiled, logSetting, config);
   }  

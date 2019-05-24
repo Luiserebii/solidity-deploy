@@ -17,6 +17,7 @@ class Deployer {
    * @param {object} [_compiled=null] - solc compilation output
    * @param {string[]} [_accounts=null] - Array of accounts
    * @param {Logger.state.ENUM} [_logSetting=Logger.state.NORMAL] - Logger state for deployer to use when running methods.
+   * @param {object} options - User options
    */
   //_compiled as an optional param, a way to sort of... hmmm, should be property?
   //NOTE: THIS IS NOT INTENDED TO BE CALLED; ONLY FOR PRIVATE USE. PLEASE USE BUILD INSTEAD!!!
@@ -35,6 +36,7 @@ class Deployer {
    * @param {JSON} [_compiled=null] - solc compilation output. Required for using `async deploy()` function!
    * @param {Logger.state.ENUM} [_logSetting=Logger.state.NORMAL] - Logger state f
 or deployer to use when running methods. 
+   * @param {object} options - User options
    *
    * @return {Deployer} deployer - a new Deployer object instantiated using the provided parameters.
    */
