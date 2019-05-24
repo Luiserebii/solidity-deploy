@@ -3,7 +3,7 @@
 const SolidityDeploy = require('solidity-deploy');
 const config = require('./deploy-config');
 
-const solidityDeploy = new SolidityDeploy.SolidityDeploy(config);
+const solidityDeploy = new SolidityDeploy(config);
 
 //DEPLOYMENT:
 const Logger = SolidityDeploy.logging.Logger;

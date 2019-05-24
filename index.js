@@ -65,18 +65,15 @@ class SolidityDeploy {
    * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
    * @param {object} options - User options
    */    
-  async createDeployer(web3, compiled, logSetting=undefined, config=this.config) {
+  async createDeployer(web3, compiled=undefined, logSetting=undefined, config=this.config) {
     return await Deployer.build(web3, compiled, logSetting, config);
   }  
   
   
 }
 
-
-module.exports = {
-  SolidityDeploy
-}
-
+//Allows for easy straightforward constructor
+module.exports = SolidityDeploy;
 
 module.exports.compile = {
   Compiler,
