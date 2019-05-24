@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>deploy/contract.js - Documentation</title>
+    <title>index.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">deploy/contract.js</h1>
+    <h1 class="page-title">index.js</h1>
     
 
     
@@ -41,46 +41,113 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Contract class for providing a simple interface for classes to read a specific contract from compiler output.
+            <pre class="prettyprint source linenums"><code>/*
+ * =================
+ *  solidity-deploy
+ * =================
+ *
+ * MIT License 
+ * Copyright (c) 2019 Luiserebii
+ *
+ *
  */
-class Contract {
+
+const defaultConfig = require('./config/default-config');
+
+const Compiler = require('./compile/compiler');
+const Flattener = require('./flatten/flattener');
+const SolcUtil = require('./compile/solc-util');
+
+const Deployer = require('./deploy/deployer');
+const DeployUtil = require('./deploy/deploy-util');
+
+const Logger = require('./logging/logger');
+const LogUtil = require('./logging/util');
+
+const PrettyPrint = require('./styling/pretty-print');
+const EtherscanVerify = require('./verify/etherscan-verify');
+const util = require('util')
+
+class SolidityDeploy {
 
   /**
-   * Initialize a Contract object. 
-   * @param {string} name - Contract name
-   * @param {JSON|object} raw - The raw piece of the compiler output JSON pertaining to the contract. For more information, please see the solc docs on compiler output: https://solidity.readthedocs.io/en/v0.5.0/using-the-compiler.html#output-description
-   * @param {string} sol - Name of the .sol file the contract was compiled in.
+   * Initialize a SolidityDeploy object. Main point of entry for config-based needs. In other words, if you are looking to use an object listed here with particular configuration, please initialize this and call the appropriate method.
+   *
+   * @param {object} options - User options, which will overwrite any default ones.
+   *
    */
-  constructor(name, raw, sol){
-    this.name = name;
-    this.raw = raw;
-    this.solFile = sol;
+  constructor(config={}) {
+    this.config = Object.assign(defaultConfig, config);
   }
 
-  get abi() { 
-    return this.raw.abi; 
+  /**
+   * Create a Compiler object.
+   *
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */
+  createCompiler(logSetting=undefined, config=this.config) {
+    return new Compiler(config, logSetting);
   }
 
-  get bytecode() {
-    return this.raw.evm.bytecode.object; 
+  /**
+   * Create a Flattener object.
+   *
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */  
+  createFlattener(logSetting=undefined, config=this.config) {
+    return new Flattener(config, logSetting);
   }
-
-  get metadata() { 
-    return JSON.parse(this.raw.metadata); //the metadata object is just a string, so let's parse for convenience...
-  }   
-
-  get compilerVersion() { 
-    return this.metadata.compiler.version; 
-  }
-
-  get optimizer() {
-    return this.metadata.settings.optimizer; 
-  }
-
+ 
+  /**
+   * Create a Deployer object.
+   *
+   * @param {web3_instance} _web3 - Initizalized web3 instance, with provider set
+   * @param {JSON} [_compiled=null] - solc compilation output. Required for using `async deploy()` function!
+   * @param {Logger.state.ENUM} logSetting - Log setting, as represented by the Logger state enum. 
+   * @param {object} options - User options
+   */    
+  async createDeployer(web3, compiled, logSetting=undefined, config=this.config) {
+    return await Deployer.build(web3, compiled, logSetting, config);
+  }  
+  
+  
 }
 
-module.exports = Contract;
+
+module.exports = {
+  SolidityDeploy
+}
+
+
+module.exports.compile = {
+  Compiler,
+  SolcUtil
+}
+
+module.exports.deploy = {
+  Deployer,
+  DeployUtil
+}
+
+module.exports.flatten = {
+  Flattener
+}
+
+module.exports.logging = {
+  Logger,
+  LogUtil
+}
+
+module.exports.styling = {
+  PrettyPrint
+}
+
+module.exports.verify = {
+  EtherscanVerify
+}
+
 </code></pre>
         </article>
     </section>
