@@ -20,12 +20,12 @@ class Deployer {
    */
   //_compiled as an optional param, a way to sort of... hmmm, should be property?
   //NOTE: THIS IS NOT INTENDED TO BE CALLED; ONLY FOR PRIVATE USE. PLEASE USE BUILD INSTEAD!!!
-  constructor(_web3, _compiled = null, _accounts = null, _logSetting = Logger.state.NORMAL, _options) {
+  constructor(_web3, _compiled = null, _accounts = null, _logSetting = Logger.state.NORMAL, _options=null) {
     this.web3 = _web3;
     this.accounts = _accounts;
     this.compiled = _compiled;
     this.log = new Logger(_logSetting);
-    this.options = _options;
+    this.options = _options; 
   }
 
   /**
@@ -38,9 +38,9 @@ or deployer to use when running methods.
    *
    * @return {Deployer} deployer - a new Deployer object instantiated using the provided parameters.
    */
-  static async build(_web3, _compiled = null, _logSetting = Logger.state.NORMAL) {    
+  static async build(_web3, _compiled = null, _logSetting = Logger.state.NORMAL, _options=null) {    
     let accounts = await _web3.eth.getAccounts();  
-    return new Deployer(_web3, _compiled, accounts, _logSetting);
+    return new Deployer(_web3, _compiled, accounts, _logSetting, _options);
   }
 
   /**
@@ -89,7 +89,7 @@ or deployer to use when running methods.
           console.log(pp.arrow("from: " + receipt.from));
           console.log(pp.arrow("block number: " + receipt.blockNumber));
           console.log(pp.arrow("gas used: " + receipt.gasUsed));
-          console.log(pp.miniheadline("\nPausing for 2 confirmations..."));
+          console.log(pp.miniheadline("\nPausing for " + this.options.deployment.confirmations + " confirmations..."));
           spinnerConf = ora().start()
           spinnerConf.clear();
 

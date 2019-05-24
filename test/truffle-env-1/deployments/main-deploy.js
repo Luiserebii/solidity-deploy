@@ -47,7 +47,7 @@ async function run() {
   //Specify solidityDeploy, the object, as our Object.assign() has taken place in the object; therefore good practice to obtain our "true settings" (although... not completely necessary in this case, I think)
   //Perhaps assume we know what we set, anyways
   const compiled = compiler.compileDirectory(config.root);
-  const deployer = await Deployer.build(web3, compiled);
+  const deployer = await solidityDeploy.createDeployer(web3, compiled);
 
   const stage = args['stage'];
 
@@ -59,13 +59,13 @@ async function run() {
     case Stage.NUMBER:
 
       const compiledNumber = await flattener.flattenAndCompile('../contracts/main-contracts/Number.sol', true);
-      const numberDeployer = await Deployer.build(web3, compiledNumber);
+      const numberDeployer = await solidityDeploy.createDeployer(web3, compiledNumber);
       await numberDeployer.deploy("Number");
 
       break;
     case Stage.NUMBERBASIC:
       const compiledNumberBasic = await flattener.flattenAndCompile('../contracts/main-contracts/NumberBasic.sol', true);
-      const numberBasicDeployer = await Deployer.build(web3, compiledNumberBasic);
+      const numberBasicDeployer = await solidityDeploy.createDeployer(web3, compiledNumberBasic);
       await numberBasicDeployer.deploy("NumberBasic", [5]);
       break;
 
