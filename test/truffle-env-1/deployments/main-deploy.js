@@ -12,7 +12,6 @@ const defaultState = Logger.state.NORMAL;
 const compiler = solidityDeploy.createCompiler(defaultState);
 const Deployer = SolidityDeploy.deploy.Deployer; //May keep it this way as short-hand
 const flattener = solidityDeploy.createFlattener(defaultState);
-const logutil = new SolidityDeploy.logging.LogUtil();
 
 const fs = require('fs');
 const path = require('path');
