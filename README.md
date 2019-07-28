@@ -1,5 +1,7 @@
 # solidity-deploy
 [![npm version](https://badge.fury.io/js/solidity-deploy.svg)](https://badge.fury.io/js/solidity-deploy)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Luiserebii/solidity-deploy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Luiserebii/solidity-deploy/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/Luiserebii/solidity-deploy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Luiserebii/solidity-deploy/alerts/)
 
 solidity-deploy is an npm module which allows someone to create custom contract deployment scripts, including an abstracted compiler and flattener. Ideally, it also allows for smart contracts to be verified on Etherscan smoothly (still buggy).
 
