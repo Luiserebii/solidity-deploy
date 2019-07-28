@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const solc = require('solc');
 const ora = require('ora');
 
 const Logger = require('../logging/logger');

@@ -62,22 +62,22 @@ class Logger {
 
   //Print "Normal", as in "verbose"
   printNormal(msg) {
-    if(validate(Logger.state.NORMAL)) this.print(msg);
+    if(this.validate(Logger.state.NORMAL)) this.print(msg);
   }
 
   //Print "Normal", as in "verbose"
   printMinimal(msg) {
-    if(validate(Logger.state.MIN)) this.print(msg);
+    if(this.validate(Logger.state.MIN)) this.print(msg);
   }
 
   //Print "Super", as in "super-verbose"
   printSuper(msg) {
-    if(validate(Logger.state.SUPER)) this.print(msg);
+    if(this.validate(Logger.state.SUPER)) this.print(msg);
   }
 
   //Print "Master", as in absolutely-verbose
   printMaster(msg) {
-    if(validate(Logger.state.MASTER)) this.print(msg);
+    if(this.validate(Logger.state.MASTER)) this.print(msg);
   }
  
 
