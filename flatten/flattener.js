@@ -55,8 +55,6 @@ class Flattener {
    * @return {object} compiled - See Compiler class for what the output of this may look like.
    */
   async flattenAndCompile(filepath, writeToFile = false) {
-    const root = this.options.root;
-
     const base = path.basename(filepath);
     //TODO: Throw error if not an array
     const src = writeToFile ? await this.flatten([filepath], path.resolve(this.options.flatten.writeLocation, base), true) : await this.flatten([filepath]);

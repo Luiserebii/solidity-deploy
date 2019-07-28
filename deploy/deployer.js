@@ -92,7 +92,7 @@ or deployer to use when running methods.
           console.log(pp.arrow("block number: " + receipt.blockNumber));
           console.log(pp.arrow("gas used: " + receipt.gasUsed));
           console.log(pp.miniheadline("\nPausing for " + this.options.deployment.confirmations + " confirmations..."));
-          spinnerConf = ora().start()
+          spinnerConf = ora().start();
           spinnerConf.clear();
 
         })

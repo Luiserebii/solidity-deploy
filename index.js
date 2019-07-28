@@ -23,7 +23,6 @@ const LogUtil = require('./logging/util');
 
 const PrettyPrint = require('./styling/pretty-print');
 const EtherscanVerify = require('./verify/etherscan-verify');
-const util = require('util')
 
 class SolidityDeploy {
 

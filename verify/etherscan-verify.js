@@ -6,15 +6,15 @@
  */
 
 const fs = require('fs');
-const path = require('path');
+//const path = require('path');
 const axios = require('axios'); 
 const util = require('util');
 
 const Compiler = require('../compile/compiler');
-const compiler = new Compiler();
+//const compiler = new Compiler();
 
 const deployutil = require('../deploy/deploy-util');
-const DeployUtil = new deployutil();
+//const DeployUtil = new deployutil();
 
 
 /////////////////////////////////////////////////////
