@@ -10,10 +10,10 @@ const fs = require('fs');
 const axios = require('axios'); 
 const util = require('util');
 
-const Compiler = require('../compile/compiler');
+//const Compiler = require('../compile/compiler');
 //const compiler = new Compiler();
 
-const deployutil = require('../deploy/deploy-util');
+//const deployutil = require('../deploy/deploy-util');
 //const DeployUtil = new deployutil();
 
 
