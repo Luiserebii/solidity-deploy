@@ -1,5 +1,6 @@
 # solidity-deploy
 [![npm version](https://badge.fury.io/js/solidity-deploy.svg)](https://badge.fury.io/js/solidity-deploy)
+![GitHub](https://img.shields.io/github/license/Luiserebii/solidity-deploy?color=g)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Luiserebii/solidity-deploy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Luiserebii/solidity-deploy/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Luiserebii/solidity-deploy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Luiserebii/solidity-deploy/alerts/)
 
