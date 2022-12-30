@@ -35,6 +35,6 @@
     "docdash": "^1.1.0",
     "jsdoc": "~3.6.2",
     "jsdoc-to-markdown": "^5.0.0",
-    "mocha": "^6.1.4"
+    "mocha": "^10.2.0"
   }
 }
